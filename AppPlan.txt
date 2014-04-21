@@ -1,0 +1,17 @@
+4-Quadrant Planner Plan:
+
+First Sprint:
+- 4 Fragments each containing an editable text box, phone protrait mode only
+- Each Text Box has heading
+
+Second Sprint:
+- Can be in landscape mode, can touch the top of a fragment to enlarge it to full size, touch again to have 4-quadrant setup
+- Can work on tablet
+
+Third Sprint:
+- Text is enclosed and dragable to different segments
+- Entries are tickable (and deletable en mass)
+
+Fourth Sprint:
+- Reminders (alarms) can be set.
+- Entries can be added to Calendar
