@@ -5,13 +5,21 @@ First Sprint:
 - Each Text Box has heading
 
 Second Sprint:
+- Text Saved to database every time you:
+1. Enter onPause()
+2. Every time you click another EditText
+
+- Text Retrieved for the database every time you:
+1. Enter onResume()
+
+Third Sprint:
 - Can be in landscape mode, can touch the top of a fragment to enlarge it to full size, touch again to have 4-quadrant setup
 - Can work on tablet
 
-Third Sprint:
+Fourth Sprint:
 - Text is enclosed and dragable to different segments
 - Entries are tickable (and deletable en mass)
 
-Fourth Sprint:
+Fifth Sprint:
 - Reminders (alarms) can be set.
 - Entries can be added to Calendar
