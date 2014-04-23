@@ -3,9 +3,10 @@
 
     <string name="app_name">Four Quadrant Planner</string>
     <string name="action_settings">Settings</string>
-    <string name="first_quadrant_heading">Urgent Important</string>
-    <string name="second_quadrant_heading">Non-Urgent Important</string>
-    <string name="third_quadrant_heading">Urgent Not Important</string>
-    <string name="fourth_quadrant_heading">Not Urgent or Important</string>
+    <string name="first_quadrant_heading">Urgent and Important</string>
+    <string name="second_quadrant_heading">Not Urgent, Important</string>
+    <string name="third_quadrant_heading">Urgent, Not Import</string>
+    <string name="fourth_quadrant_heading">Not Urgent or Import</string>
+    <string name="to_do_hint_text">Write to-do item here&#8230;</string>
 
 </resources>
