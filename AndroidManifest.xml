@@ -22,6 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:name="com.example.fourquadrantcontentprovider.FourQuadrantContentProvider"
+            android:authorities="com.example.fourquadrantcontentprovider"
+            android:exported="false" >
+        </provider>
     </application>
 
 </manifest>

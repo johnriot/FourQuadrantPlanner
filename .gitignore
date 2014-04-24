@@ -20,7 +20,7 @@ gen/
 local.properties
 
 # Eclipse Ignorance
-
+.classpath
 *.pydevproject
 .project
 .metadata
@@ -32,7 +32,6 @@ tmp/**/*
 *.swp
 *~.nib
 local.properties
-.classpath
 .settings/
 .loadpath
 
