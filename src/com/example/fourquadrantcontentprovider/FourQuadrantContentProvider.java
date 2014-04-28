@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 import android.util.SparseArray;
@@ -62,19 +63,28 @@ public class FourQuadrantContentProvider extends ContentProvider {
 
 	// Insert specified value into ContentProvider
 	@Override
-	public synchronized Uri insert(Uri uri, ContentValues value) {
+	public synchronized Uri insert(Uri uri, ContentValues values) {
 		SQLiteDatabase sqlDB = database.getWritableDatabase();
-		if (value.containsKey(DataContract.DATA)) {
-			ContentValues newValues = new ContentValues();
-			newValues.put(TodoTable.COLUMN_ID, 1);
-			newValues.put(TodoTable.COLUMN_DESCRIPTION,
-					value.getAsString(DataContract.DATA));
-			long id = sqlDB.insert(TodoTable.TABLE_TODO, null, newValues);
+		if (values.containsKey(DataContract._ID)
+				&& values.containsKey(DataContract.DATA)) {
+
+			long id = sqlDB.insert(DataContract.DATA_TABLE, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return Uri.withAppendedPath(DataContract.CONTENT_URI,
 					String.valueOf(id));
 		}
 		return null;
+		/*
+		 * SQLiteDatabase sqlDB = database.getWritableDatabase(); if
+		 * (value.containsKey(DataContract.DATA)) { ContentValues newValues =
+		 * new ContentValues(); newValues.put(TodoTable.COLUMN_ID, 1);
+		 * newValues.put(TodoTable.COLUMN_DESCRIPTION,
+		 * value.getAsString(DataContract.DATA)); long id =
+		 * sqlDB.insert(TodoTable.TABLE_TODO, null, newValues);
+		 * getContext().getContentResolver().notifyChange(uri, null); return
+		 * Uri.withAppendedPath(DataContract.CONTENT_URI, String.valueOf(id)); }
+		 */
+
 		/*
 		 * if (value.containsKey(DataContract.DATA)) {
 		 * 
@@ -97,31 +107,41 @@ public class FourQuadrantContentProvider extends ContentProvider {
 	public synchronized Cursor query(Uri uri, String[] projection,
 			String selection, String[] selectionArgs, String sortOrder) {
 
-		// Create simple cursor
-		MatrixCursor cursor = new MatrixCursor(DataContract.ALL_COLUMNS);
+		// Uisng SQLiteQueryBuilder instead of query() method
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
-		if (isTableUri(uri)) {
+		// Set the table
+		queryBuilder.setTables(DataContract.DATA_TABLE);
 
-			// Add all rows to cursor
-			for (int idx = 0; idx < db.size(); idx++) {
+		SQLiteDatabase localDb = database.getWritableDatabase();
+		Cursor cursor = queryBuilder.query(localDb, DataContract.ALL_COLUMNS,
+				selection, selectionArgs, null, null, sortOrder);
+		// make sure that potential listeners are getting notified
+		cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
-				DataRecord dataRecord = db.get(db.keyAt(idx));
-				cursor.addRow(new Object[] { dataRecord.getID(),
-						dataRecord.getData() });
-
-			}
-		} else if (isItemUri(uri)) {
-
-			// Add single row to cursor
-			Integer requestId = Integer.parseInt(uri.getLastPathSegment());
-
-			if (null != db.get(requestId)) {
-
-				DataRecord dr = db.get(requestId);
-				cursor.addRow(new Object[] { dr.getID(), dr.getData() });
-
-			}
-		}
+		/*
+		 * // Create simple cursor MatrixCursor cursor = new
+		 * MatrixCursor(DataContract.ALL_COLUMNS);
+		 * 
+		 * if (isTableUri(uri)) {
+		 * 
+		 * // Add all rows to cursor for (int idx = 0; idx < db.size(); idx++) {
+		 * 
+		 * DataRecord dataRecord = db.get(db.keyAt(idx)); cursor.addRow(new
+		 * Object[] { dataRecord.getID(), dataRecord.getData() });
+		 * 
+		 * } } else if (isItemUri(uri)) {
+		 * 
+		 * // Add single row to cursor Integer requestId =
+		 * Integer.parseInt(uri.getLastPathSegment());
+		 * 
+		 * if (null != db.get(requestId)) {
+		 * 
+		 * DataRecord dr = db.get(requestId); cursor.addRow(new Object[] {
+		 * dr.getID(), dr.getData() });
+		 * 
+		 * } }
+		 */
 		return cursor;
 	}
 

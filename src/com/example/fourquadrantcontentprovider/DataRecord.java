@@ -1,6 +1,6 @@
 package com.example.fourquadrantcontentprovider;
 
-class DataRecord {
+public class DataRecord {
 
 	private static int id;
 
@@ -10,16 +10,16 @@ class DataRecord {
 	// Display Name
 	private final String _data;
 
-	DataRecord(String _data) {
+	public DataRecord(String _data) {
 		this._data = _data;
 		this._id = id++;
 	}
 
-	String getData() {
+	public String getData() {
 		return _data;
 	}
 
-	int getID() {
+	public int getID() {
 		return _id;
 	}
 

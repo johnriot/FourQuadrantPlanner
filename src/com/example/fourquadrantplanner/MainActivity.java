@@ -83,7 +83,10 @@ public class MainActivity extends Activity {
 		ContentValues values = new ContentValues();
 
 		// Insert first record
-		values.put(DataContract.DATA, tlTodoBox.getText().toString());
+		// values.put(DataContract.DATA, tlTodoBox.getText().toString());
+		DataRecord dataRecord = new DataRecord(tlTodoBox.getText().toString());
+		values.put(DataContract._ID, dataRecord.getID());
+		values.put(DataContract.DATA, dataRecord.getData());
 		Uri firstRecordUri = contentResolver.insert(DataContract.CONTENT_URI,
 				values);
 
@@ -94,6 +97,6 @@ public class MainActivity extends Activity {
 		c.moveToFirst();
 		String record = c.getString(c.getColumnIndex(DataContract.DATA));
 		brTodoBox.setText(record);
-
+		c.close();
 	}
 }
