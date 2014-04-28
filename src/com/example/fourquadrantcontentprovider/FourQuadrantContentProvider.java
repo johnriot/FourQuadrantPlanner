@@ -25,29 +25,20 @@ public class FourQuadrantContentProvider extends ContentProvider {
 	public synchronized int delete(Uri uri, String selection,
 			String[] selectionArgs) {
 
-		int numRecordsRemoved = 0;
+		int rowsDeleted = 0;
+		SQLiteDatabase sqlDB = database.getWritableDatabase();
 
-		// If last segment is the table name, delete all data items
 		if (isTableUri(uri)) {
-
-			numRecordsRemoved = db.size();
-			db.clear();
-
-			// If last segment is the digit, delete data item with that ID
+			rowsDeleted = sqlDB.delete(DataContract.DATA_TABLE, null, null);
 		} else if (isItemUri(uri)) {
-
 			Integer requestId = Integer.parseInt(uri.getLastPathSegment());
-
-			if (null != db.get(requestId)) {
-
-				db.remove(requestId);
-
-				numRecordsRemoved++;
-			}
+			rowsDeleted = sqlDB.delete(DataContract.DATA_TABLE,
+					DataContract._ID + "=" + requestId + " and " + selection,
+					selectionArgs);
 		}
 
 		// return number of items deleted
-		return numRecordsRemoved;
+		return rowsDeleted;
 	}
 
 	// Return MIME type for given uri
@@ -74,30 +65,6 @@ public class FourQuadrantContentProvider extends ContentProvider {
 					String.valueOf(id));
 		}
 		return null;
-		/*
-		 * SQLiteDatabase sqlDB = database.getWritableDatabase(); if
-		 * (value.containsKey(DataContract.DATA)) { ContentValues newValues =
-		 * new ContentValues(); newValues.put(TodoTable.COLUMN_ID, 1);
-		 * newValues.put(TodoTable.COLUMN_DESCRIPTION,
-		 * value.getAsString(DataContract.DATA)); long id =
-		 * sqlDB.insert(TodoTable.TABLE_TODO, null, newValues);
-		 * getContext().getContentResolver().notifyChange(uri, null); return
-		 * Uri.withAppendedPath(DataContract.CONTENT_URI, String.valueOf(id)); }
-		 */
-
-		/*
-		 * if (value.containsKey(DataContract.DATA)) {
-		 * 
-		 * DataRecord dataRecord = new DataRecord(
-		 * value.getAsString(DataContract.DATA)); db.put(dataRecord.getID(),
-		 * dataRecord);
-		 * 
-		 * // return Uri associated with newly-added data item return
-		 * Uri.withAppendedPath(DataContract.CONTENT_URI,
-		 * String.valueOf(dataRecord.getID()));
-		 * 
-		 * } return null;
-		 */
 	}
 
 	// return all or some rows from ContentProvider based on specified Uri
@@ -119,29 +86,6 @@ public class FourQuadrantContentProvider extends ContentProvider {
 		// make sure that potential listeners are getting notified
 		cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
-		/*
-		 * // Create simple cursor MatrixCursor cursor = new
-		 * MatrixCursor(DataContract.ALL_COLUMNS);
-		 * 
-		 * if (isTableUri(uri)) {
-		 * 
-		 * // Add all rows to cursor for (int idx = 0; idx < db.size(); idx++) {
-		 * 
-		 * DataRecord dataRecord = db.get(db.keyAt(idx)); cursor.addRow(new
-		 * Object[] { dataRecord.getID(), dataRecord.getData() });
-		 * 
-		 * } } else if (isItemUri(uri)) {
-		 * 
-		 * // Add single row to cursor Integer requestId =
-		 * Integer.parseInt(uri.getLastPathSegment());
-		 * 
-		 * if (null != db.get(requestId)) {
-		 * 
-		 * DataRecord dr = db.get(requestId); cursor.addRow(new Object[] {
-		 * dr.getID(), dr.getData() });
-		 * 
-		 * } }
-		 */
 		return cursor;
 	}
 
