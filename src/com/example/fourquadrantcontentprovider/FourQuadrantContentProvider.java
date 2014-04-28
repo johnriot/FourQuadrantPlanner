@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 import android.util.SparseArray;
@@ -13,6 +14,7 @@ public class FourQuadrantContentProvider extends ContentProvider {
 
 	// Data storage
 	private static final SparseArray<DataRecord> db = new SparseArray<DataRecord>();
+	private FourQuadrantDatabaseHelper database;
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FourQuadrantPlannerContentProvider";
@@ -61,19 +63,31 @@ public class FourQuadrantContentProvider extends ContentProvider {
 	// Insert specified value into ContentProvider
 	@Override
 	public synchronized Uri insert(Uri uri, ContentValues value) {
-
+		SQLiteDatabase sqlDB = database.getWritableDatabase();
 		if (value.containsKey(DataContract.DATA)) {
-
-			DataRecord dataRecord = new DataRecord(
+			ContentValues newValues = new ContentValues();
+			newValues.put(TodoTable.COLUMN_ID, 1);
+			newValues.put(TodoTable.COLUMN_DESCRIPTION,
 					value.getAsString(DataContract.DATA));
-			db.put(dataRecord.getID(), dataRecord);
-
-			// return Uri associated with newly-added data item
+			long id = sqlDB.insert(TodoTable.TABLE_TODO, null, newValues);
+			getContext().getContentResolver().notifyChange(uri, null);
 			return Uri.withAppendedPath(DataContract.CONTENT_URI,
-					String.valueOf(dataRecord.getID()));
-
+					String.valueOf(id));
 		}
 		return null;
+		/*
+		 * if (value.containsKey(DataContract.DATA)) {
+		 * 
+		 * DataRecord dataRecord = new DataRecord(
+		 * value.getAsString(DataContract.DATA)); db.put(dataRecord.getID(),
+		 * dataRecord);
+		 * 
+		 * // return Uri associated with newly-added data item return
+		 * Uri.withAppendedPath(DataContract.CONTENT_URI,
+		 * String.valueOf(dataRecord.getID()));
+		 * 
+		 * } return null;
+		 */
 	}
 
 	// return all or some rows from ContentProvider based on specified Uri
@@ -119,10 +133,13 @@ public class FourQuadrantContentProvider extends ContentProvider {
 	}
 
 	// Initialize ContentProvider
-	// Nothing to do in this case
 	@Override
 	public boolean onCreate() {
-		return true;
+		database = new FourQuadrantDatabaseHelper(getContext());
+		return false;
+		/*
+		 * return true;
+		 */
 	}
 
 	// Does last segment of the Uri match a string of digits?
