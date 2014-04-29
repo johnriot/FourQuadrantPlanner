@@ -6,11 +6,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class FourQuadrantDatabaseHelper extends SQLiteOpenHelper {
 
-	private static final String DATABASE_NAME = "todotable.db";
+	private static final String DATABASE_NAME = "fourquadrant.db";
 	private static final int DATABASE_VERSION = 1;
+	private Context mContext;
 
 	public FourQuadrantDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		mContext = context;
 		databaseCleanup(context);
 	}
 
@@ -18,6 +20,7 @@ public class FourQuadrantDatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase database) {
 		TodoTable.onCreate(database);
+		QuadrantsTable.onCreate(database, mContext);
 	}
 
 	// Method is called during an upgrade of the database,

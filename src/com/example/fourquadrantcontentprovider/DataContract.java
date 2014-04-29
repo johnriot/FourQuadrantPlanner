@@ -8,9 +8,14 @@ import android.net.Uri;
 
 public final class DataContract {
 
+	public static final String DATA_TABLE = "todo_table";
 	public static final String _ID = "_id";
-	public static final String DATA = "data";
-	public static final String DATA_TABLE = "data_table";
+	public static final String TODO_TEXT = "todo_item";
+	public static final String REF_QUADRANTS_ID = "quadrants_id";
+
+	public static final String QUADRANTS_TABLE = "quadrants_table";
+	public static final String QUADRANTS_ID = "_id";
+	public static final String QUADRANTS_CATEGORY = "category";
 
 	private static final Uri BASE_URI = Uri
 			.parse("content://com.example.fourquadrantcontentprovider/");
@@ -27,7 +32,12 @@ public final class DataContract {
 	public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
 			+ "/FourQuadrantContentProvider.data.text";
 
-	// All columns of this table
-	public static final String[] ALL_COLUMNS = { _ID, DATA };
+	// All columns of todo table
+	public static final String[] ALL_TODO_COLUMNS = { _ID, TODO_TEXT,
+			REF_QUADRANTS_ID };
+
+	// All columns of quadrants table
+	public static final String[] ALL_QUADRANT_COLUMNS = { QUADRANTS_ID,
+			QUADRANTS_CATEGORY };
 
 }

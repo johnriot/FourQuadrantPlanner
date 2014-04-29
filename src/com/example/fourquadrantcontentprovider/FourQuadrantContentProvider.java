@@ -14,7 +14,6 @@ import android.util.SparseArray;
 public class FourQuadrantContentProvider extends ContentProvider {
 
 	// Data storage
-	private static final SparseArray<DataRecord> db = new SparseArray<DataRecord>();
 	private FourQuadrantDatabaseHelper database;
 
 	@SuppressWarnings("unused")
@@ -57,7 +56,8 @@ public class FourQuadrantContentProvider extends ContentProvider {
 	public synchronized Uri insert(Uri uri, ContentValues values) {
 		SQLiteDatabase sqlDB = database.getWritableDatabase();
 		if (values.containsKey(DataContract._ID)
-				&& values.containsKey(DataContract.DATA)) {
+				&& values.containsKey(DataContract.TODO_TEXT)
+				&& values.containsKey(DataContract.REF_QUADRANTS_ID)) {
 
 			long id = sqlDB.insert(DataContract.DATA_TABLE, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
@@ -78,11 +78,16 @@ public class FourQuadrantContentProvider extends ContentProvider {
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
 		// Set the table
-		queryBuilder.setTables(DataContract.DATA_TABLE);
+		// queryBuilder.setTables(DataContract.DATA_TABLE);
+		queryBuilder.setTables(DataContract.QUADRANTS_TABLE);
 
 		SQLiteDatabase localDb = database.getWritableDatabase();
-		Cursor cursor = queryBuilder.query(localDb, DataContract.ALL_COLUMNS,
-				selection, selectionArgs, null, null, sortOrder);
+		// Cursor cursor = queryBuilder.query(localDb,
+		// DataContract.ALL_TODO_COLUMNS, selection, selectionArgs, null,
+		// null, sortOrder);
+		Cursor cursor = queryBuilder.query(localDb,
+				DataContract.ALL_QUADRANT_COLUMNS, selection, selectionArgs,
+				null, null, sortOrder);
 		// make sure that potential listeners are getting notified
 		cursor.setNotificationUri(getContext().getContentResolver(), uri);
 

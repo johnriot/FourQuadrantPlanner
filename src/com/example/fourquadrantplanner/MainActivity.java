@@ -86,7 +86,8 @@ public class MainActivity extends Activity {
 		// values.put(DataContract.DATA, tlTodoBox.getText().toString());
 		DataRecord dataRecord = new DataRecord(tlTodoBox.getText().toString());
 		values.put(DataContract._ID, dataRecord.getID());
-		values.put(DataContract.DATA, dataRecord.getData());
+		values.put(DataContract.TODO_TEXT, dataRecord.getData());
+		values.put(DataContract.REF_QUADRANTS_ID, 4); // Hardcoded quadrant 4
 		Uri firstRecordUri = contentResolver.insert(DataContract.CONTENT_URI,
 				values);
 
@@ -95,7 +96,10 @@ public class MainActivity extends Activity {
 		Cursor c = contentResolver.query(DataContract.CONTENT_URI, null, null,
 				null, null);
 		c.moveToFirst();
-		String record = c.getString(c.getColumnIndex(DataContract.DATA));
+		// String record =
+		// c.getString(c.getColumnIndex(DataContract.TODO_TEXT));
+		String record = c.getString(c
+				.getColumnIndex(DataContract.QUADRANTS_CATEGORY));
 		brTodoBox.setText(record);
 		c.close();
 	}
