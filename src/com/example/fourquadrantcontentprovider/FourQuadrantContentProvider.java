@@ -78,16 +78,13 @@ public class FourQuadrantContentProvider extends ContentProvider {
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
 		// Set the table
-		// queryBuilder.setTables(DataContract.DATA_TABLE);
-		queryBuilder.setTables(DataContract.QUADRANTS_TABLE);
+		queryBuilder.setTables(DataContract.DATA_TABLE);
 
 		SQLiteDatabase localDb = database.getWritableDatabase();
-		// Cursor cursor = queryBuilder.query(localDb,
-		// DataContract.ALL_TODO_COLUMNS, selection, selectionArgs, null,
-		// null, sortOrder);
 		Cursor cursor = queryBuilder.query(localDb,
-				DataContract.ALL_QUADRANT_COLUMNS, selection, selectionArgs,
-				null, null, sortOrder);
+				DataContract.ALL_TODO_COLUMNS, selection, selectionArgs, null,
+				null, sortOrder);
+
 		// make sure that potential listeners are getting notified
 		cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
@@ -106,9 +103,6 @@ public class FourQuadrantContentProvider extends ContentProvider {
 	public boolean onCreate() {
 		database = new FourQuadrantDatabaseHelper(getContext());
 		return false;
-		/*
-		 * return true;
-		 */
 	}
 
 	// Does last segment of the Uri match a string of digits?

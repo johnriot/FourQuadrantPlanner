@@ -16,58 +16,62 @@ import com.example.fourquadrantcontentprovider.*;
 
 public class MainActivity extends Activity {
 
-	private EditText tlTodoBox;
-	private EditText trTodoBox;
-	private EditText blTodoBox;
-	private EditText brTodoBox;
+	private Quadrants mQuadrants;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		tlTodoBox = (EditText) findViewById(R.id.top_left_editText);
-		trTodoBox = (EditText) findViewById(R.id.top_right_editText);
-		blTodoBox = (EditText) findViewById(R.id.bottom_left_editText);
-		brTodoBox = (EditText) findViewById(R.id.bottom_right_editText);
+		mQuadrants = new Quadrants(this);
 
-		tlTodoBox.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (hasFocus) {
-					tlTodoBox.setHint("");
-				}
-			}
-		});
+		mQuadrants.getBox(TodoBox.TOP_LEFT).setOnFocusChangeListener(
+				new OnFocusChangeListener() {
+					@Override
+					public void onFocusChange(View v, boolean hasFocus) {
+						if (hasFocus) {
+							mQuadrants.setText(TodoBox.TOP_LEFT, "");
+						}
+					}
+				});
 
-		trTodoBox.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (hasFocus) {
-					trTodoBox.setHint("");
-				}
-			}
-		});
+		mQuadrants.getBox(TodoBox.TOP_RIGHT).setOnFocusChangeListener(
+				new OnFocusChangeListener() {
+					@Override
+					public void onFocusChange(View v, boolean hasFocus) {
+						if (hasFocus) {
+							mQuadrants.setText(TodoBox.TOP_RIGHT, "");
+						}
+					}
+				});
 
-		blTodoBox.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (hasFocus) {
-					blTodoBox.setHint("");
-				}
-			}
-		});
+		mQuadrants.getBox(TodoBox.BOTTOM_LEFT).setOnFocusChangeListener(
+				new OnFocusChangeListener() {
+					@Override
+					public void onFocusChange(View v, boolean hasFocus) {
+						if (hasFocus) {
+							mQuadrants.setText(TodoBox.BOTTOM_LEFT, "");
+						}
+					}
+				});
 
-		brTodoBox.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (hasFocus) {
-					brTodoBox.setHint("");
+		mQuadrants.getBox(TodoBox.BOTTOM_RIGHT).setOnFocusChangeListener(
+				new OnFocusChangeListener() {
+					@Override
+					public void onFocusChange(View v, boolean hasFocus) {
+						if (hasFocus) {
+							mQuadrants.setText(TodoBox.BOTTOM_RIGHT, "");
 
-					testContentProvider();
-				}
-			}
-		});
+							testContentProvider();
+						}
+					}
+				});
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		// mQuadrants.writeAllTextToDatabase();
 	}
 
 	@Override
@@ -83,11 +87,11 @@ public class MainActivity extends Activity {
 		ContentValues values = new ContentValues();
 
 		// Insert first record
-		// values.put(DataContract.DATA, tlTodoBox.getText().toString());
-		DataRecord dataRecord = new DataRecord(tlTodoBox.getText().toString());
+		DataRecord dataRecord = new DataRecord(
+				mQuadrants.getText(TodoBox.TOP_LEFT));
 		values.put(DataContract._ID, dataRecord.getID());
 		values.put(DataContract.TODO_TEXT, dataRecord.getData());
-		values.put(DataContract.REF_QUADRANTS_ID, 4); // Hardcoded quadrant 4
+		values.put(DataContract.REF_QUADRANTS_ID, 1); // Hardcoded quadrant 1
 		Uri firstRecordUri = contentResolver.insert(DataContract.CONTENT_URI,
 				values);
 
@@ -96,11 +100,8 @@ public class MainActivity extends Activity {
 		Cursor c = contentResolver.query(DataContract.CONTENT_URI, null, null,
 				null, null);
 		c.moveToFirst();
-		// String record =
-		// c.getString(c.getColumnIndex(DataContract.TODO_TEXT));
-		String record = c.getString(c
-				.getColumnIndex(DataContract.QUADRANTS_CATEGORY));
-		brTodoBox.setText(record);
+		String record = c.getString(c.getColumnIndex(DataContract.TODO_TEXT));
+		mQuadrants.setText(TodoBox.BOTTOM_RIGHT, record);
 		c.close();
 	}
 }

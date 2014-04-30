@@ -13,24 +13,6 @@ public class QuadrantsTable {
 			+ " integer primary key autoincrement, "
 			+ DataContract.QUADRANTS_CATEGORY + " text not null" + ");";
 
-	/*
-	 * private static final String FIRST_QUADRANT_ROW_INSERT = "insert into " +
-	 * DataContract.QUADRANTS_TABLE + " values " + "(1, " +
-	 * getString(R.string.first_quadrant_heading) + ");";
-	 * 
-	 * private static final String SECOND_QUADRANT_ROW_INSERT = "insert into " +
-	 * DataContract.QUADRANTS_TABLE + " values " + "(2, " +
-	 * R.string.second_quadrant_heading + ");";
-	 * 
-	 * private static final String THIRD_QUADRANT_ROW_INSERT = "insert into " +
-	 * DataContract.QUADRANTS_TABLE + " values " + "(3, " +
-	 * R.string.third_quadrant_heading + ");";
-	 * 
-	 * private static final String FOURTH_QUADRANT_ROW_INSERT = "insert into " +
-	 * DataContract.QUADRANTS_TABLE + " values " + "(4, " +
-	 * R.string.fourth_quadrant_heading + ");";
-	 */
-
 	public static void onCreate(SQLiteDatabase database, Context context) {
 		database.execSQL(DATABASE_CREATE);
 
