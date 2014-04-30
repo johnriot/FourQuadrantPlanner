@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
 						if (hasFocus) {
 							mQuadrants.setText(TodoBox.BOTTOM_RIGHT, "");
 
-							testContentProvider();
+							// testContentProvider();
 						}
 					}
 				});
@@ -71,7 +71,13 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		// mQuadrants.writeAllTextToDatabase();
+		mQuadrants.writeAllTextToDatabase(this);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mQuadrants.readAllTextFromDatabase(this);
 	}
 
 	@Override

@@ -2,8 +2,15 @@ package com.example.fourquadrantplanner;
 
 import java.util.*;
 
+import com.example.fourquadrantcontentprovider.DataContract;
+import com.example.fourquadrantcontentprovider.DataRecord;
+
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.widget.EditText;
 
 enum TodoBox {
@@ -27,13 +34,13 @@ public class Quadrants {
 	public EditText getBox(TodoBox todoBox) {
 		switch (todoBox) {
 		case TOP_LEFT:
-			return mTodoBoxes.get(0);
+			return mTodoBoxes.get(TodoBox.TOP_LEFT.ordinal());
 		case TOP_RIGHT:
-			return mTodoBoxes.get(1);
+			return mTodoBoxes.get(TodoBox.TOP_RIGHT.ordinal());
 		case BOTTOM_LEFT:
-			return mTodoBoxes.get(2);
+			return mTodoBoxes.get(TodoBox.BOTTOM_LEFT.ordinal());
 		case BOTTOM_RIGHT:
-			return mTodoBoxes.get(3);
+			return mTodoBoxes.get(TodoBox.BOTTOM_RIGHT.ordinal());
 		default:
 			System.out.println("Error in getTextFromTodo");
 			return null;
@@ -48,12 +55,46 @@ public class Quadrants {
 		getBox(todoBox).setText(text);
 	}
 
-	public void writeAllTextToDatabase() {
-
+	// Perhaps these next methods should be in a class like DatabaseClient
+	public void writeAllTextToDatabase(Context context) {
+		for (TodoBox box : TodoBox.values()) {
+			writeTextToDatabase(context, box);
+		}
 	}
 
-	public void writeTextDatabase(int boxNumber) {
+	public void writeTextToDatabase(Context context, TodoBox box) {
+		// getText(box)
+		ContentResolver contentResolver = context.getContentResolver();
 
+		ContentValues values = new ContentValues();
+
+		// Insert first record
+		DataRecord dataRecord = new DataRecord(getText(TodoBox.TOP_LEFT));
+		values.put(DataContract._ID, dataRecord.getID());
+		values.put(DataContract.TODO_TEXT, dataRecord.getData());
+		values.put(DataContract.REF_QUADRANTS_ID, box.ordinal());
+		Uri firstRecordUri = contentResolver.insert(DataContract.CONTENT_URI,
+				values);
+
+		values.clear();
 	}
 
+	public void readAllTextFromDatabase(Context context) {
+		for (TodoBox box : TodoBox.values()) {
+			readTextFromDatabase(context, box);
+		}
+	}
+
+	public void readTextFromDatabase(Context context, TodoBox box) {
+		Cursor cursor = context.getContentResolver().query(
+				DataContract.CONTENT_URI, null, null, null, null);
+		if (cursor.getCount() > box.ordinal()) {
+			// Bit of a hack, should only return the required row
+			cursor.moveToPosition(box.ordinal());
+			String record = cursor.getString(cursor
+					.getColumnIndex(DataContract.TODO_TEXT));
+			setText(box, record);
+		}
+		cursor.close();
+	}
 }
