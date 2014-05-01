@@ -63,38 +63,30 @@ public class Quadrants {
 	}
 
 	public void writeTextToDatabase(Context context, TodoBox box) {
-		// getText(box)
+
 		ContentResolver contentResolver = context.getContentResolver();
 
 		ContentValues values = new ContentValues();
 
 		// Insert first record
-		DataRecord dataRecord = new DataRecord(getText(TodoBox.TOP_LEFT));
-		values.put(DataContract._ID, dataRecord.getID());
+		DataRecord dataRecord = new DataRecord(getText(box));
 		values.put(DataContract.TODO_TEXT, dataRecord.getData());
-		values.put(DataContract.REF_QUADRANTS_ID, box.ordinal());
-		Uri firstRecordUri = contentResolver.insert(DataContract.CONTENT_URI,
-				values);
-
+		String updateClause = DataContract._ID + "=" + (box.ordinal() + 1);
+		int numChanges = contentResolver.update(DataContract.CONTENT_URI,
+				values, updateClause, null);
 		values.clear();
 	}
 
 	public void readAllTextFromDatabase(Context context) {
-		for (TodoBox box : TodoBox.values()) {
-			readTextFromDatabase(context, box);
-		}
-	}
-
-	public void readTextFromDatabase(Context context, TodoBox box) {
 		Cursor cursor = context.getContentResolver().query(
 				DataContract.CONTENT_URI, null, null, null, null);
-		if (cursor.getCount() > box.ordinal()) {
-			// Bit of a hack, should only return the required row
-			cursor.moveToPosition(box.ordinal());
-			String record = cursor.getString(cursor
-					.getColumnIndex(DataContract.TODO_TEXT));
-			setText(box, record);
+		if (cursor.getCount() == mTodoBoxes.size()) {
+			for (TodoBox box : TodoBox.values()) {
+				cursor.moveToNext();
+				String record = cursor.getString(cursor
+						.getColumnIndex(DataContract.TODO_TEXT));
+				setText(box, record);
+			}
 		}
-		cursor.close();
 	}
 }

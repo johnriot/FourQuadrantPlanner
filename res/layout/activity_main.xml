@@ -49,7 +49,7 @@
 		            android:gravity="left"
 		            android:padding="2sp"
 		            android:textSize="12sp"
-		            android:inputType="text"
+		            android:inputType="textMultiLine"
 		            android:textColorHint="#b2b2b2"
 					android:hint="@string/to_do_hint_text"/>
 			</LinearLayout> <!-- END Linear Layout for Top Left Quadrant -->
@@ -80,7 +80,7 @@
 		            android:gravity="left"
 		            android:padding="2sp"
 		            android:textSize="12sp"
-		            android:inputType="text"
+		            android:inputType="textMultiLine"
 		            android:textColorHint="#b2b2b2"
 					android:hint="@string/to_do_hint_text"/>
 				</LinearLayout> <!-- END Linear Layout for Top Right Quadrant --> 
@@ -120,7 +120,7 @@
 		            android:gravity="left"
 		            android:padding="2sp"
 		            android:textSize="12sp"
-		            android:inputType="text"
+		            android:inputType="textMultiLine"
 		            android:textColorHint="#b2b2b2"
 					android:hint="@string/to_do_hint_text"/>
 			</LinearLayout> <!-- END Linear Layout for Bottom Left Quadrant -->
@@ -151,7 +151,7 @@
 		            android:gravity="left"
 		            android:padding="2sp"
 		            android:textSize="12sp"
-		            android:inputType="text"
+		            android:inputType="textMultiLine"
 		            android:textColorHint="#b2b2b2"
 					android:hint="@string/to_do_hint_text"/>
 				</LinearLayout> <!-- END Linear Layout for Bottom Right Quadrant --> 

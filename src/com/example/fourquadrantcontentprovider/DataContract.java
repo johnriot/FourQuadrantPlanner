@@ -8,7 +8,7 @@ import android.net.Uri;
 
 public final class DataContract {
 
-	public static final String DATA_TABLE = "todo_table";
+	public static final String TODO_TABLE = "todo_table";
 	public static final String _ID = "_id";
 	public static final String TODO_TEXT = "todo_item";
 	public static final String REF_QUADRANTS_ID = "quadrants_id";
@@ -22,7 +22,7 @@ public final class DataContract {
 
 	// The URI for this table.
 	public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_URI,
-			DATA_TABLE);
+			TODO_TABLE);
 
 	// Mime type for a directory of data items
 	public static final String CONTENT_DIR_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE

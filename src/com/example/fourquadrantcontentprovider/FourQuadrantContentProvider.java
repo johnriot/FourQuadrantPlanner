@@ -28,10 +28,10 @@ public class FourQuadrantContentProvider extends ContentProvider {
 		SQLiteDatabase sqlDB = database.getWritableDatabase();
 
 		if (isTableUri(uri)) {
-			rowsDeleted = sqlDB.delete(DataContract.DATA_TABLE, null, null);
+			rowsDeleted = sqlDB.delete(DataContract.TODO_TABLE, null, null);
 		} else if (isItemUri(uri)) {
 			Integer requestId = Integer.parseInt(uri.getLastPathSegment());
-			rowsDeleted = sqlDB.delete(DataContract.DATA_TABLE,
+			rowsDeleted = sqlDB.delete(DataContract.TODO_TABLE,
 					DataContract._ID + "=" + requestId + " and " + selection,
 					selectionArgs);
 		}
@@ -59,7 +59,7 @@ public class FourQuadrantContentProvider extends ContentProvider {
 				&& values.containsKey(DataContract.TODO_TEXT)
 				&& values.containsKey(DataContract.REF_QUADRANTS_ID)) {
 
-			long id = sqlDB.insert(DataContract.DATA_TABLE, null, values);
+			long id = sqlDB.insert(DataContract.TODO_TABLE, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return Uri.withAppendedPath(DataContract.CONTENT_URI,
 					String.valueOf(id));
@@ -78,7 +78,7 @@ public class FourQuadrantContentProvider extends ContentProvider {
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
 		// Set the table
-		queryBuilder.setTables(DataContract.DATA_TABLE);
+		queryBuilder.setTables(DataContract.TODO_TABLE);
 
 		SQLiteDatabase localDb = database.getWritableDatabase();
 		Cursor cursor = queryBuilder.query(localDb,
@@ -91,11 +91,23 @@ public class FourQuadrantContentProvider extends ContentProvider {
 		return cursor;
 	}
 
-	// Ignore request
+	// Update
 	@Override
 	public synchronized int update(Uri uri, ContentValues values,
 			String selection, String[] selectionArgs) {
-		return 0;
+
+		SQLiteDatabase sqlDB = database.getWritableDatabase();
+		int numUpdates = 0;
+		if (// values.containsKey(DataContract._ID) &&
+		values.containsKey(DataContract.TODO_TEXT)
+		// && values.containsKey(DataContract.REF_QUADRANTS_ID)
+		) {
+
+			numUpdates = sqlDB.update(DataContract.TODO_TABLE, values,
+					selection, null);
+			getContext().getContentResolver().notifyChange(uri, null);
+		}
+		return numUpdates;
 	}
 
 	// Initialize ContentProvider
@@ -112,7 +124,7 @@ public class FourQuadrantContentProvider extends ContentProvider {
 
 	// Is the last segment of the Uri the name of the data table?
 	private boolean isTableUri(Uri uri) {
-		return uri.getLastPathSegment().equals(DataContract.DATA_TABLE);
+		return uri.getLastPathSegment().equals(DataContract.TODO_TABLE);
 	}
 
 }
