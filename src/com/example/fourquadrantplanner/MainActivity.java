@@ -2,6 +2,7 @@ package com.example.fourquadrantplanner;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -9,9 +10,13 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnDragListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fourquadrantcontentprovider.*;
@@ -42,13 +47,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        mQuadrants.writeAllTextToDatabase(this);
+        mQuadrants.writeAllTextToDatabase();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mQuadrants.readAllTextFromDatabase(this);
+        mQuadrants.readAllTextFromDatabase();
     }
 
     @Override
@@ -62,10 +67,12 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.action_todo:
-            // Replace this with functionality to pop up a dialog for note
-            // insertion
-            Toast.makeText(getApplicationContext(),
-                    "Add Note: Not Implemented!", Toast.LENGTH_SHORT).show();
+            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.top_left_layout);
+            TodoTextView view = new TodoTextView(this);
+            view.setText("Todo Item");
+            view.setBackgroundResource(R.drawable.back);
+            linearLayout.addView(view);
+            mQuadrants.addTodoView(view);
             return true;
         default:
             return false;

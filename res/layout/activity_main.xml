@@ -25,9 +25,12 @@
 	
 		    <!-- Linear Layout for Top Left Quadrant -->
 		    <LinearLayout
+		        android:id="@+id/top_left_layout"
 		        android:layout_width="0dp"
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
+		        android:background="#ffcccb"
+		        android:padding="2sp"
 		        android:orientation="vertical" >
 		        
 		        <TextView
@@ -40,6 +43,8 @@
 		            android:textSize="14sp"
 		            android:textStyle="bold"/>
 		        
+		        
+		        <!--  
 		        <EditText
 		            android:id="@+id/top_left_editText"
 		            android:layout_width="match_parent"
@@ -52,6 +57,7 @@
 		            android:inputType="textMultiLine"
 		            android:textColorHint="#b2b2b2"
 					android:hint="@string/to_do_hint_text"/>
+					-->
 			</LinearLayout> <!-- END Linear Layout for Top Left Quadrant -->
 	
 		    <!-- Linear Layout for Top Right Quadrant -->
@@ -59,6 +65,8 @@
 		        android:layout_width="0dp"
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
+		        android:background="#90ee90"
+		        android:padding="2sp"
 		        android:orientation="vertical" >
 		        
 		        <TextView
@@ -71,6 +79,7 @@
 		            android:textSize="14sp"
 		            android:textStyle="bold"/>
 	        
+		        <!-- 
 		        <EditText
 		            android:id="@+id/top_right_editText"
 		            android:layout_width="match_parent"
@@ -83,7 +92,9 @@
 		            android:inputType="textMultiLine"
 		            android:textColorHint="#b2b2b2"
 					android:hint="@string/to_do_hint_text"/>
-				</LinearLayout> <!-- END Linear Layout for Top Right Quadrant --> 
+					-->
+				</LinearLayout> 
+				<!-- END Linear Layout for Top Right Quadrant --> 
         
         </LinearLayout> <!-- END Linear Layout to separate top left quadrant from top right quadrant -->
         
