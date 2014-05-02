@@ -8,9 +8,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.fourquadrantcontentprovider.*;
 
@@ -31,38 +33,6 @@ public class MainActivity extends Activity {
         			public void onFocusChange(View v, boolean hasFocus) {
         				if (hasFocus) {
         					mQuadrants.setText(TodoBox.TOP_LEFT, "");
-        				}
-        			}
-        		});
-
-        mQuadrants.getBox(TodoBox.TOP_RIGHT).setOnFocusChangeListener(
-        		new OnFocusChangeListener() {
-        			@Override
-        			public void onFocusChange(View v, boolean hasFocus) {
-        				if (hasFocus) {
-        					mQuadrants.setText(TodoBox.TOP_RIGHT, "");
-        				}
-        			}
-        		});
-
-        mQuadrants.getBox(TodoBox.BOTTOM_LEFT).setOnFocusChangeListener(
-        		new OnFocusChangeListener() {
-        			@Override
-        			public void onFocusChange(View v, boolean hasFocus) {
-        				if (hasFocus) {
-        					mQuadrants.setText(TodoBox.BOTTOM_LEFT, "");
-        				}
-        			}
-        		});
-
-        mQuadrants.getBox(TodoBox.BOTTOM_RIGHT).setOnFocusChangeListener(
-        		new OnFocusChangeListener() {
-        			@Override
-        			public void onFocusChange(View v, boolean hasFocus) {
-        				if (hasFocus) {
-        					mQuadrants.setText(TodoBox.BOTTOM_RIGHT, "");
-
-        					// testContentProvider();
         				}
         			}
         		});
@@ -88,27 +58,17 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    private void testContentProvider() {
-        ContentResolver contentResolver = getContentResolver();
-
-        ContentValues values = new ContentValues();
-
-        // Insert first record
-        DataRecord dataRecord = new DataRecord(
-                mQuadrants.getText(TodoBox.TOP_LEFT));
-        values.put(DataContract._ID, dataRecord.getID());
-        values.put(DataContract.TODO_TEXT, dataRecord.getData());
-        values.put(DataContract.REF_QUADRANTS_ID, 1); // Hardcoded quadrant 1
-        Uri firstRecordUri = contentResolver.insert(DataContract.CONTENT_URI,
-                values);
-
-        values.clear();
-
-        Cursor c = contentResolver.query(DataContract.CONTENT_URI, null, null,
-                null, null);
-        c.moveToFirst();
-        String record = c.getString(c.getColumnIndex(DataContract.TODO_TEXT));
-        mQuadrants.setText(TodoBox.BOTTOM_RIGHT, record);
-        c.close();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.action_todo:
+            // Replace this with functionality to pop up a dialog for note
+            // insertion
+            Toast.makeText(getApplicationContext(),
+                    "Add Note: Not Implemented!", Toast.LENGTH_SHORT).show();
+            return true;
+        default:
+            return false;
+        }
     }
 }
