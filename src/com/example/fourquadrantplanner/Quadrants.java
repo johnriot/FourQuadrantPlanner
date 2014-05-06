@@ -6,14 +6,20 @@ import com.example.fourquadrantcontentprovider.DataContract;
 import com.example.fourquadrantcontentprovider.DataRecord;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.DragShadowBuilder;
+import android.view.View.OnDragListener;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,11 +28,14 @@ enum TodoBox {
 }
 
 public class Quadrants {
+    int mOffsetX = 0;
+    int mOffsetY = 0;
+
     private ArrayList<EditText> mTodoBoxes = new ArrayList<EditText>();
 
     private ArrayList<TodoTextView> mTodoViews = new ArrayList<TodoTextView>();
 
-    private Context mContext;
+    public static Context mContext;
 
     public Quadrants(Activity activity) {
         /* Removing these dues to removing EditTexts from layout file
@@ -37,7 +46,7 @@ public class Quadrants {
                 */
 
         mContext = activity;
-        // TODO: Remove these tow lines, only here to stop crashing.
+        // TODO: Remove these two lines, only here to stop crashing.
         mTodoBoxes.add((EditText) activity
                 .findViewById(R.id.bottom_left_editText));
         mTodoBoxes.add((EditText) activity
@@ -47,6 +56,7 @@ public class Quadrants {
                 .findViewById(R.id.bottom_left_editText));
         mTodoBoxes.add((EditText) activity
                 .findViewById(R.id.bottom_right_editText));
+        addOnDragListeners();
     }
 
     public EditText getBox(TodoBox todoBox) {
@@ -106,35 +116,20 @@ public class Quadrants {
                 setText(box, record);
             }
         }
+        cursor.close();
     }
 
     // Code for TodoItems
     public void addTodoView(TodoTextView todoView) {
         mTodoViews.add(todoView);
-        addOnTouchListeners();
+        todoView.makeDraggable();
     }
 
-    private void addOnTouchListeners() {
-        for (TodoTextView view : mTodoViews) {
-            view.setOnTouchListener(new View.OnTouchListener() {
-
-                @Override
-                public boolean onTouch(View view, MotionEvent event) {
-                    switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_MOVE:
-                        Toast.makeText(mContext, "Move Detected",
-                                Toast.LENGTH_SHORT).show();
-                        return true;
-                    case MotionEvent.ACTION_DOWN:
-                        Toast.makeText(mContext, "Press Detected",
-                                Toast.LENGTH_SHORT).show();
-                        return true;
-                    default:
-                        return false;
-                    }
-                }
-
-            });
-        }
+    // Means that quadrants can be targets for drag actions
+    private void addOnDragListeners() {
+        ((Activity) mContext).findViewById(R.id.top_left_layout)
+                .setOnDragListener(new QuadrantDragListener());
+        ((Activity) mContext).findViewById(R.id.top_right_layout)
+                .setOnDragListener(new QuadrantDragListener());
     }
 }

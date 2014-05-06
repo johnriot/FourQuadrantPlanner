@@ -62,6 +62,7 @@
 	
 		    <!-- Linear Layout for Top Right Quadrant -->
 		    <LinearLayout
+		        android:id="@+id/top_right_layout"
 		        android:layout_width="0dp"
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
@@ -107,6 +108,7 @@
 	
 		    <!-- Linear Layout for Bottom Left Quadrant -->
 		    <LinearLayout
+		        android:id="@+id/bottom_left_layout"
 		        android:layout_width="0dp"
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"

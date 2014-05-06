@@ -31,17 +31,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         mQuadrants = new Quadrants(this);
-        /*
-        mQuadrants.getBox(TodoBox.TOP_LEFT).setOnFocusChangeListener(
-        		new OnFocusChangeListener() {
-        			@Override
-        			public void onFocusChange(View v, boolean hasFocus) {
-        				if (hasFocus) {
-        					mQuadrants.setText(TodoBox.TOP_LEFT, "");
-        				}
-        			}
-        		});
-        		*/
     }
 
     @Override
