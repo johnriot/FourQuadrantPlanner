@@ -112,6 +112,8 @@
 		        android:layout_width="0dp"
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
+		        android:background="#ffc87a"
+		        android:padding="2sp"
 		        android:orientation="vertical" >
 		        
 		        <TextView
@@ -124,6 +126,7 @@
 		            android:textSize="14sp"
 		            android:textStyle="bold"/>
 		        
+		        <!-- 
 		        <EditText
 		            android:id="@+id/bottom_left_editText"
 		            android:layout_width="match_parent"
@@ -136,13 +139,17 @@
 		            android:inputType="textMultiLine"
 		            android:textColorHint="#b2b2b2"
 					android:hint="@string/to_do_hint_text"/>
+					-->
 			</LinearLayout> <!-- END Linear Layout for Bottom Left Quadrant -->
 	
 		    <!-- Linear Layout for Bottom Right Quadrant -->
 		    <LinearLayout
+		        android:id="@+id/bottom_right_layout"
 		        android:layout_width="0dp"
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
+		        android:background="#ffff80"
+		        android:padding="2sp"
 		        android:orientation="vertical" >
 		        
 		        <TextView
@@ -155,6 +162,7 @@
 		            android:textSize="14sp"
 		            android:textStyle="bold"/>
 	        
+		        <!-- 
 		        <EditText
 		            android:id="@+id/bottom_right_editText"
 		            android:layout_width="match_parent"
@@ -167,6 +175,7 @@
 		            android:inputType="textMultiLine"
 		            android:textColorHint="#b2b2b2"
 					android:hint="@string/to_do_hint_text"/>
+				 -->
 				</LinearLayout> <!-- END Linear Layout for Bottom Right Quadrant --> 
         
         </LinearLayout> <!-- END Linear Layout to separate bottom left quadrant from bottom right quadrant -->

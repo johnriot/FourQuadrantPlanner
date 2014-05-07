@@ -7,11 +7,12 @@ import android.view.View;
 import android.view.View.DragShadowBuilder;
 import android.widget.TextView;
 
-public class TodoTextView extends TextView {
+public class DraggableTextView extends TextView {
 
-    public TodoTextView(Context context) {
+    public DraggableTextView(Context context) {
         super(context);
-
+        setBackgroundResource(R.drawable.back);
+        makeDraggable();
     }
 
     public void makeDraggable() {

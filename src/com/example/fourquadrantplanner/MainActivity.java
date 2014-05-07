@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.example.fourquadrantcontentprovider.*;
 
 public class MainActivity extends Activity {
-
     private Quadrants mQuadrants;
 
     @Override
@@ -36,13 +35,14 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        mQuadrants.writeAllTextToDatabase();
+        mQuadrants.writeTextToDatabase();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mQuadrants.readAllTextFromDatabase();
+        // mQuadrants.readAllTextFromDatabase();
+        mQuadrants.readAllTextFromDatabaseTodoTextViewImplementation();
     }
 
     @Override
@@ -56,12 +56,10 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.action_todo:
-            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.top_left_layout);
-            TodoTextView view = new TodoTextView(this);
-            view.setText("Todo Item");
-            view.setBackgroundResource(R.drawable.back);
-            linearLayout.addView(view);
-            mQuadrants.addTodoView(view);
+            mQuadrants.addTodo(TodoBox.TOP_LEFT);
+            mQuadrants.addTodo(TodoBox.TOP_RIGHT);
+            mQuadrants.addTodo(TodoBox.BOTTOM_LEFT);
+            mQuadrants.addTodo(TodoBox.BOTTOM_RIGHT);
             return true;
         default:
             return false;
