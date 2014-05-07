@@ -9,14 +9,26 @@ import android.widget.TextView;
 
 // A TextView with a border that can be dragged and dropped
 // in different locations on the UI
-public class DraggableTextView extends TextView {
+public class DraggableTodoView extends TextView {
 
-    public DraggableTextView(Context context) {
+    private final TodoItem mTodoItem;
+
+    // Create the TodoView, set the text of the item,
+    // give it a border and make it draggable
+    public DraggableTodoView(Context context, TodoItem item) {
         super(context);
+        mTodoItem = item;
+        setText(item.mText);
         setBackgroundResource(R.drawable.back);
         makeDraggable();
     }
 
+    // Return the encapsulated TodoItem
+    public TodoItem getItem() {
+        return mTodoItem;
+    }
+
+    // Allow the text view to be dragged across the UI
     public void makeDraggable() {
         super.setOnTouchListener(new View.OnTouchListener() {
 
@@ -42,4 +54,24 @@ public class DraggableTextView extends TextView {
         });
     }
 
+    // Changes the TodoBox of the TodoItem based on the id of the
+    // target in with it was dropped
+    public void changeQuadrant(int targetId) {
+        switch (targetId) {
+        case R.id.top_left_layout:
+            mTodoItem.setBox(TodoBox.TOP_LEFT);
+            break;
+        case R.id.top_right_layout:
+            mTodoItem.setBox(TodoBox.TOP_RIGHT);
+            break;
+        case R.id.bottom_left_layout:
+            mTodoItem.setBox(TodoBox.BOTTOM_LEFT);
+            break;
+        case R.id.bottom_right_layout:
+            mTodoItem.setBox(TodoBox.BOTTOM_RIGHT);
+            break;
+        default:
+            break;
+        }
+    }
 }

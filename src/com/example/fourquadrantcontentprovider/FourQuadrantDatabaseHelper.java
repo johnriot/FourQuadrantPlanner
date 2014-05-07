@@ -13,7 +13,7 @@ public class FourQuadrantDatabaseHelper extends SQLiteOpenHelper {
     public FourQuadrantDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context;
-        databaseCleanup(mContext);
+        // databaseCleanup(mContext);
     }
 
     // Method is called during creation of the database

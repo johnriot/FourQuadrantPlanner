@@ -29,6 +29,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mQuadrants = new Quadrants(this);
+        // Moved readTextFromDatabase() here. When it was in onResume()
+        // then multiple copies of the same DraggableTodoView were being drawn
+        // in cases of pause-and-resume (e.g. press the home button and then
+        // resume the application). Correct behaviour achieved having the read
+        // method called here.
+        mQuadrants.readTextFromDatabase();
     }
 
     @Override
@@ -40,7 +46,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        mQuadrants.readTextFromDatabase();
+        // mQuadrants.readTextFromDatabase();
     }
 
     @Override

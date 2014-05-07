@@ -28,7 +28,7 @@ enum TodoBox {
 }
 
 public class Quadrants {
-    private ArrayList<TodoItem> mTodoItems = new ArrayList<TodoItem>();
+    private ArrayList<DraggableTodoView> mTodoViews = new ArrayList<DraggableTodoView>();
     public static Context mContext;
 
     // Constructor, sets all quadrants as drag sinks
@@ -40,12 +40,17 @@ public class Quadrants {
     // Writes all TodoItem records to the database
     public void writeTextToDatabase() {
         ContentResolver contentResolver = mContext.getContentResolver();
+
+        // First Delete everything from the database
+        contentResolver.delete(DataContract.CONTENT_URI, null, null);
+
+        // Then rewrite everything back to the database
         ContentValues values = new ContentValues();
-        for (TodoItem item : mTodoItems) {
-            // DataRecord dataRecord = new DataRecord(item.mText);
-            values.put(DataContract._ID, item.mId);
+        for (DraggableTodoView view : mTodoViews) {
+            TodoItem item = view.getItem();
             values.put(DataContract.TODO_TEXT, item.mText);
-            values.put(DataContract.REF_QUADRANTS_ID, item.mBox.ordinal() + 1);
+            values.put(DataContract.REF_QUADRANTS_ID,
+                    boxToQuadrant(item.getBox()));
             Uri recordUri = contentResolver.insert(DataContract.CONTENT_URI,
                     values);
             values.clear();
@@ -56,7 +61,7 @@ public class Quadrants {
     public void readTextFromDatabase() {
         Cursor c = mContext.getContentResolver().query(
                 DataContract.CONTENT_URI, null, null, null, null);
-        mTodoItems.clear();
+        mTodoViews.clear();
         TodoItem.resetCount();
         if (c != null && c.moveToFirst()) {
             do {
@@ -65,8 +70,7 @@ public class Quadrants {
                 int refQuadrants = Integer.parseInt(c.getString(c
                         .getColumnIndex(DataContract.REF_QUADRANTS_ID)));
                 addTodo(quadrantToBox(refQuadrants));
-                Toast.makeText(mContext, record, Toast.LENGTH_SHORT).show();
-
+                // Toast.makeText(mContext, record, Toast.LENGTH_SHORT).show();
             } while (c.moveToNext());
             c.close();
         }
@@ -96,10 +100,10 @@ public class Quadrants {
             break;
         }
         TodoItem item = new TodoItem("Todo Item", box);
-        DraggableTextView view = new DraggableTextView(mContext);
-        view.setText(item.mText);
+        DraggableTodoView view = new DraggableTodoView(mContext, item);
+        // view.setText(item.mText);
         linearLayout.addView(view);
-        mTodoItems.add(item);
+        mTodoViews.add(view);
     }
 
     // Means that quadrants can be targets for drag actions
@@ -119,6 +123,12 @@ public class Quadrants {
     public static TodoBox quadrantToBox(int quadrant) {
         return TodoBox.values()[quadrant - 1];
     }
+
+    // Converts an integer representing a quadrant to an enum representing the
+    // TodoBox
+    public static int boxToQuadrant(TodoBox box) {
+        return box.ordinal() + 1;
+    }
 }
 
 /**
@@ -136,14 +146,17 @@ class QuadrantDragListener implements OnDragListener {
             break;
         case DragEvent.ACTION_DROP:
             // Dropped, reassign View to ViewGroup
-            View view = (View) event.getLocalState();
+            DraggableTodoView view = (DraggableTodoView) event.getLocalState();
             ViewGroup owner = (ViewGroup) view.getParent();
             owner.removeView(view);
             LinearLayout container = (LinearLayout) v;
             container.addView(view);
+            view.changeQuadrant(container.getId());
             view.setVisibility(View.VISIBLE);
             break;
         case DragEvent.ACTION_DRAG_ENDED:
+            // If the drag is a failure, then make the view visible in the
+            // original location
             if (!event.getResult()) {
                 View view2 = (View) event.getLocalState();
                 view2.setVisibility(View.VISIBLE);
