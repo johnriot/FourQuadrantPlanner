@@ -28,7 +28,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mQuadrants = new Quadrants(this);
     }
 
@@ -41,8 +40,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        // mQuadrants.readAllTextFromDatabase();
-        mQuadrants.readAllTextFromDatabaseTodoTextViewImplementation();
+        mQuadrants.readTextFromDatabase();
     }
 
     @Override
@@ -55,6 +53,7 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        // Plus button is pressed
         case R.id.action_todo:
             mQuadrants.addTodo(TodoBox.TOP_LEFT);
             mQuadrants.addTodo(TodoBox.TOP_RIGHT);

@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.View.DragShadowBuilder;
 import android.widget.TextView;
 
+// A TextView with a border that can be dragged and dropped
+// in different locations on the UI
 public class DraggableTextView extends TextView {
 
     public DraggableTextView(Context context) {
@@ -22,6 +24,8 @@ public class DraggableTextView extends TextView {
             public boolean onTouch(View view, MotionEvent event) {
                 switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_MOVE:
+                    // Makes the original TextView invisible and creates
+                    // a copy that follows your finger as you drag
                     ClipData data = ClipData.newPlainText("", "");
                     DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
                             view);
