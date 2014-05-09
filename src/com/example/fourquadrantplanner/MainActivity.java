@@ -66,7 +66,7 @@ public class MainActivity extends Activity implements TodoDialogFragment.NoticeD
         switch (item.getItemId()) {
         // Plus button is pressed
         case R.id.action_todo:
-            createTodoDialog();
+            mQuadrants.createTodoDialog();
             return true;
         default:
             return false;
@@ -76,12 +76,11 @@ public class MainActivity extends Activity implements TodoDialogFragment.NoticeD
     // Callback from TodoDialogFragment->Create which creates
     // a new TodoItem in the selected quadrant
     @Override
-    public void onDialogPositiveClick(TodoBox box, String text) {
-        mQuadrants.addTodo(box, text);
-    }
-
-    private void createTodoDialog() {
-        DialogFragment todoDialog = new TodoDialogFragment();
-        todoDialog.show(getFragmentManager(), "todoDialog");
+    public void onDialogPositiveClick(TodoBox box, String text, int viewKey) {
+        if (viewKey == -1) {
+            mQuadrants.addTodo(box, text);
+        } else {
+            mQuadrants.editTodo(box, text, viewKey);
+        }
     }
 }

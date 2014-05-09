@@ -1,10 +1,8 @@
 package com.example.fourquadrantplanner;
 
 public class TodoItem {
-    private static int id;
 
-    // public final int mId;
-    public final String mText;
+    private String mText;
     private TodoBox mBox;
 
     // Constructor using text and the TodoBox quadrant
@@ -18,6 +16,14 @@ public class TodoItem {
         this(text, Quadrants.quadrantToBox(quadrant));
     }
 
+    public String getText() {
+        return mText;
+    }
+
+    public void setText(String text) {
+        mText = text;
+    }
+
     public TodoBox getBox() {
         return mBox;
     }
@@ -26,8 +32,10 @@ public class TodoItem {
         mBox = box;
     }
 
+    /*
     // Resets the static counting id for TodoItems
     public static void resetCount() {
         id = 0;
     }
+    */
 }

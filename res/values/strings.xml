@@ -8,7 +8,7 @@
     <string name="third_quadrant_heading">Urgent, Not Import</string>
     <string name="fourth_quadrant_heading">Not Urgent or Import</string>
     <string name="to_do_hint_text">Create todo item&#8230;</string>
-    <string name="create">Create</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="q1_radio_box">Q1</string>
     <string name="q2_radio_box">Q2</string>
