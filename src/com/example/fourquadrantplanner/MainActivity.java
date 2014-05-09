@@ -4,8 +4,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.view.Menu;
@@ -16,12 +19,14 @@ import android.view.View.OnDragListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fourquadrantcontentprovider.*;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements TodoDialogFragment.NoticeDialogListener {
     private Quadrants mQuadrants;
 
     @Override
@@ -61,13 +66,22 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
         // Plus button is pressed
         case R.id.action_todo:
-            mQuadrants.addTodo(TodoBox.TOP_LEFT);
-            mQuadrants.addTodo(TodoBox.TOP_RIGHT);
-            mQuadrants.addTodo(TodoBox.BOTTOM_LEFT);
-            mQuadrants.addTodo(TodoBox.BOTTOM_RIGHT);
+            createTodoDialog();
             return true;
         default:
             return false;
         }
+    }
+
+    // Callback from TodoDialogFragment->Create which creates
+    // a new TodoItem in the selected quadrant
+    @Override
+    public void onDialogPositiveClick(TodoBox box, String text) {
+        mQuadrants.addTodo(box, text);
+    }
+
+    private void createTodoDialog() {
+        DialogFragment todoDialog = new TodoDialogFragment();
+        todoDialog.show(getFragmentManager(), "todoDialog");
     }
 }

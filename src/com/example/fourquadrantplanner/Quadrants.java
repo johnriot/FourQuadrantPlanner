@@ -65,11 +65,11 @@ public class Quadrants {
         TodoItem.resetCount();
         if (c != null && c.moveToFirst()) {
             do {
-                String record = c.getString(c
+                String text = c.getString(c
                         .getColumnIndex(DataContract.TODO_TEXT));
                 int refQuadrants = Integer.parseInt(c.getString(c
                         .getColumnIndex(DataContract.REF_QUADRANTS_ID)));
-                addTodo(quadrantToBox(refQuadrants));
+                addTodo(quadrantToBox(refQuadrants), text);
                 // Toast.makeText(mContext, record, Toast.LENGTH_SHORT).show();
             } while (c.moveToNext());
             c.close();
@@ -77,7 +77,7 @@ public class Quadrants {
     }
 
     // Add a todoView to the UI and the todoItem to the List
-    public void addTodo(TodoBox box) {
+    public void addTodo(TodoBox box, String text) {
         LinearLayout linearLayout = null;
         switch (box) {
         case TOP_LEFT:
@@ -99,7 +99,7 @@ public class Quadrants {
         default:
             break;
         }
-        TodoItem item = new TodoItem("Todo Item", box);
+        TodoItem item = new TodoItem(text, box);
         DraggableTodoView view = new DraggableTodoView(mContext, item);
         // view.setText(item.mText);
         linearLayout.addView(view);

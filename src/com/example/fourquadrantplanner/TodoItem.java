@@ -9,8 +9,7 @@ public class TodoItem {
 
     // Constructor using text and the TodoBox quadrant
     public TodoItem(String text, TodoBox box) {
-        // mId = id++;
-        mText = text + " " + ++id;
+        mText = text;
         mBox = box;
     }
 

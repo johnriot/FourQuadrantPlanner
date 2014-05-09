@@ -25,14 +25,21 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int action_todo=0x7f080004;
+        public static final int action_todo=0x7f08000a;
         public static final int bottom_left_layout=0x7f080002;
         public static final int bottom_right_layout=0x7f080003;
+        public static final int quadrant_radio1=0x7f080006;
+        public static final int quadrant_radio2=0x7f080007;
+        public static final int quadrant_radio3=0x7f080008;
+        public static final int quadrant_radio4=0x7f080009;
+        public static final int quadrant_radio_group=0x7f080005;
+        public static final int todo_text=0x7f080004;
         public static final int top_left_layout=0x7f080000;
         public static final int top_right_layout=0x7f080001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
+        public static final int dialog_todo=0x7f030001;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -40,8 +47,14 @@ public final class R {
     public static final class string {
         public static final int action_add_todo=0x7f050001;
         public static final int app_name=0x7f050000;
+        public static final int cancel=0x7f050008;
+        public static final int create=0x7f050007;
         public static final int first_quadrant_heading=0x7f050002;
         public static final int fourth_quadrant_heading=0x7f050005;
+        public static final int q1_radio_box=0x7f050009;
+        public static final int q2_radio_box=0x7f05000a;
+        public static final int q3_radio_box=0x7f05000b;
+        public static final int q4_radio_box=0x7f05000c;
         public static final int second_quadrant_heading=0x7f050003;
         public static final int third_quadrant_heading=0x7f050004;
         public static final int to_do_hint_text=0x7f050006;
