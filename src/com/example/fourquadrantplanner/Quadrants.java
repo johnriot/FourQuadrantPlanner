@@ -162,7 +162,7 @@ public class Quadrants {
  */
 class QuadrantDragListener implements OnDragListener {
     @Override
-    public boolean onDrag(View v, DragEvent event) {
+    public boolean onDrag(View targetView, DragEvent event) {
         switch (event.getAction()) {
         case DragEvent.ACTION_DRAG_STARTED:
             break;
@@ -171,22 +171,18 @@ class QuadrantDragListener implements OnDragListener {
         case DragEvent.ACTION_DRAG_EXITED:
             break;
         case DragEvent.ACTION_DROP:
-            // Dropped, reassign View to ViewGroup
-            DraggableTodoView view = (DraggableTodoView) event.getLocalState();
-            ViewGroup owner = (ViewGroup) view.getParent();
-            owner.removeView(view);
-            LinearLayout container = (LinearLayout) v;
-            container.addView(view);
-            view.changeQuadrant(container.getId());
-            view.setVisibility(View.VISIBLE);
-            break;
+            // Move the DraggableView to the new location
+            DraggableTodoView movingView = (DraggableTodoView) event.getLocalState();
+            movingView.redrawInNewLocation((ViewGroup) targetView, null);
+            return true;
         case DragEvent.ACTION_DRAG_ENDED:
             // If the drag is a failure, then make the view visible in the
-            // original location
+            // original location.
             if (!event.getResult()) {
-                View view2 = (View) event.getLocalState();
-                view2.setVisibility(View.VISIBLE);
+                ((DraggableTodoView) event.getLocalState()).setVisible();
             }
+            break;
+
         default:
             break;
         }

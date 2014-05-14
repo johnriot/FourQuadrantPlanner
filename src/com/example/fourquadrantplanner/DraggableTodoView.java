@@ -4,11 +4,18 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
 import android.os.Bundle;
+import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.DragShadowBuilder;
+import android.view.ViewParent;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 // A TextView with a border that can be dragged and dropped
 // in different locations on the UI
@@ -28,8 +35,20 @@ public class DraggableTodoView extends TextView {
         mTodoItem = item;
         mId = ID++;
         setText(item.getText());
-        setBackgroundResource(R.drawable.back);
+        setBackgroundResource(R.drawable.back_blue);
         makeDraggable();
+        makeReorderable();
+    }
+
+    public DraggableTodoView(DraggableTodoView copyFrom) {
+        super(copyFrom.mContext);
+        mContext = copyFrom.mContext;
+        mTodoItem = copyFrom.mTodoItem;
+        mId = copyFrom.mId;
+        setText(mTodoItem.getText());
+        setBackgroundResource(R.drawable.back_blue);
+        makeDraggable();
+        makeReorderable();
     }
 
     // Return the encapsulated TodoItem
@@ -71,6 +90,84 @@ public class DraggableTodoView extends TextView {
                 }
             }
 
+        });
+    }
+
+    /**
+     * Allows views to reorder as a view from the same group is moved up and
+     * down that group
+     */
+    public void makeReorderable() {
+        super.setOnDragListener(new View.OnDragListener() {
+
+            @Override
+            public boolean onDrag(View stationaryView, DragEvent event) {
+                final int action = event.getAction();
+
+                switch (action) {
+                case DragEvent.ACTION_DRAG_ENTERED: {
+                    stationaryView.setBackgroundResource(R.drawable.back_red);
+                    break;
+                }
+
+                case DragEvent.ACTION_DRAG_EXITED: {
+                    stationaryView.setBackgroundResource(R.drawable.back_blue);
+                    break;
+                }
+
+                case DragEvent.ACTION_DROP: {
+                    // Move the DraggableView to the new location
+                    DraggableTodoView movingView = (DraggableTodoView) event.getLocalState();
+                    movingView.redrawInNewLocation((ViewGroup) stationaryView.getParent(),
+                            (DraggableTodoView) stationaryView);
+                    return true;
+                }
+
+                case DragEvent.ACTION_DRAG_ENDED:
+                    // If the drag is a failure, then make the view visible in
+                    // the original location
+                    if (!event.getResult()) {
+                        ((DraggableTodoView) event.getLocalState()).setVisible();
+                    }
+
+                default:
+                    break;
+                }
+                return true;
+            }
+        });
+
+    }
+
+    /**
+     * Remove a View from one owner and redraw in the new location. A targetView
+     * of null can be passed when dragging into blank space in a quadrant
+     */
+    public void redrawInNewLocation(ViewGroup targetContainer, DraggableTodoView targetView) {
+        // Remove the moving View from its owner
+        ViewGroup oldOwner = (ViewGroup) getParent();
+        oldOwner.removeView(this);
+
+        // Add a clone of the moving view to the parent of the stationary view
+        DraggableTodoView clonedView = new DraggableTodoView(this);
+        if (targetView != null) {
+            targetContainer.addView(clonedView, targetContainer.indexOfChild(targetView));
+            targetView.setBackgroundResource(R.drawable.back_blue);
+        } else {
+            targetContainer.addView(clonedView);
+        }
+        clonedView.changeQuadrant(targetContainer.getId());
+    }
+
+    /**
+     * Make the view visible again (in its original location) Called on another
+     * thread to avoid ConcurrentModificationException
+     */
+    public void setVisible() {
+        post(new Runnable() {
+            public void run() {
+                setVisibility(View.VISIBLE);
+            }
         });
     }
 

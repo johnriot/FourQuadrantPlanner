@@ -31,7 +31,8 @@
 		        android:layout_weight="1"
 		        android:background="#ffcccb"
 		        android:padding="2sp"
-		        android:orientation="vertical" >
+		        android:orientation="vertical"
+		        android:animateLayoutChanges="true" >
 		        
 		        <TextView
 		            android:layout_width="match_parent"
@@ -68,7 +69,8 @@
 		        android:layout_weight="1"
 		        android:background="#90ee90"
 		        android:padding="2sp"
-		        android:orientation="vertical" >
+		        android:orientation="vertical"
+		        android:animateLayoutChanges="true" >
 		        
 		        <TextView
 		            android:layout_width="match_parent"
@@ -114,7 +116,8 @@
 		        android:layout_weight="1"
 		        android:background="#ffc87a"
 		        android:padding="2sp"
-		        android:orientation="vertical" >
+		        android:orientation="vertical"
+		        android:animateLayoutChanges="true" >
 		        
 		        <TextView
 		            android:layout_width="match_parent"
@@ -150,7 +153,8 @@
 		        android:layout_weight="1"
 		        android:background="#ffff80"
 		        android:padding="2sp"
-		        android:orientation="vertical" >
+		        android:orientation="vertical"
+		        android:animateLayoutChanges="true" >
 		        
 		        <TextView
 		            android:layout_width="match_parent"
