@@ -102,9 +102,7 @@ public class DraggableTodoView extends TextView {
 
             @Override
             public boolean onDrag(View stationaryView, DragEvent event) {
-                final int action = event.getAction();
-
-                switch (action) {
+                switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_ENTERED: {
                     stationaryView.setBackgroundResource(R.drawable.back_red);
                     break;

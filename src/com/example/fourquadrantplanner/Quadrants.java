@@ -12,6 +12,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.text.Layout;
 import android.view.DragEvent;
@@ -30,8 +31,6 @@ enum TodoBox {
 }
 
 public class Quadrants {
-    // private ArrayList<DraggableTodoView> mTodoViews = new
-    // ArrayList<DraggableTodoView>();
     private Map<Integer, DraggableTodoView> mTodoViews = new HashMap<Integer, DraggableTodoView>();
     public static Context mContext;
 
@@ -162,7 +161,7 @@ public class Quadrants {
  */
 class QuadrantDragListener implements OnDragListener {
     @Override
-    public boolean onDrag(View targetView, DragEvent event) {
+    public boolean onDrag(View targetQuadrant, DragEvent event) {
         switch (event.getAction()) {
         case DragEvent.ACTION_DRAG_STARTED:
             break;
@@ -171,9 +170,17 @@ class QuadrantDragListener implements OnDragListener {
         case DragEvent.ACTION_DRAG_EXITED:
             break;
         case DragEvent.ACTION_DROP:
-            // Move the DraggableView to the new location
             DraggableTodoView movingView = (DraggableTodoView) event.getLocalState();
-            movingView.redrawInNewLocation((ViewGroup) targetView, null);
+
+            // Check if View has been dropped in its original location
+            if (isPointInsideView(event.getX(), event.getY(), movingView)) {
+                // Returning false means view will be made visible again
+                // in ACTION_DRAG_ENDED below
+                return false;
+            }
+
+            // Otherwise redraw in the new loaction
+            movingView.redrawInNewLocation((ViewGroup) targetQuadrant, null);
             return true;
         case DragEvent.ACTION_DRAG_ENDED:
             // If the drag is a failure, then make the view visible in the
@@ -187,5 +194,21 @@ class QuadrantDragListener implements OnDragListener {
             break;
         }
         return true;
+    }
+
+    /**
+     * Checks if the view has contains a given point. Used to check if the view
+     * has been dropped in its original location.
+     */
+    private boolean isPointInsideView(float x, float y, View view) {
+        float viewX = view.getX();
+        float viewY = view.getY();
+
+        // point is inside view bounds
+        if ((x > viewX && x < (viewX + view.getWidth())) && (y > viewY && y < (viewY + view.getHeight()))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
