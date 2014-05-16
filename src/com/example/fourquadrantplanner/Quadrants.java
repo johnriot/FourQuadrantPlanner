@@ -42,6 +42,9 @@ public class Quadrants {
 
     // Writes all TodoItem records to the database
     public void writeTextToDatabase() {
+        // Set Priorities based on order in quadrants
+        setPriorities();
+
         ContentResolver contentResolver = mContext.getContentResolver();
 
         // First Delete everything from the database
@@ -52,6 +55,7 @@ public class Quadrants {
         for (DraggableTodoView view : mTodoViews.values()) {
             TodoItem item = view.getItem();
             values.put(DataContract.TODO_TEXT, item.getText());
+            values.put(DataContract.PRIORITY, item.getPriority());
             values.put(DataContract.REF_QUADRANTS_ID, boxToQuadrant(item.getBox()));
             Uri recordUri = contentResolver.insert(DataContract.CONTENT_URI, values);
             values.clear();
@@ -60,7 +64,8 @@ public class Quadrants {
 
     // Reads all TodoItem records from the database
     public void readTextFromDatabase() {
-        Cursor c = mContext.getContentResolver().query(DataContract.CONTENT_URI, null, null, null, null);
+        Cursor c = mContext.getContentResolver().query(DataContract.CONTENT_URI, null, null, null,
+                DataContract.PRIORITY);
         mTodoViews.clear();
         if (c != null && c.moveToFirst()) {
             do {
@@ -74,9 +79,11 @@ public class Quadrants {
     }
 
     // Add a todoView to the UI and the todoItem to the List
+    // By default place it at the end
     public void addTodo(TodoBox box, String text) {
         LinearLayout linearLayout = getLayout(box);
-        TodoItem item = new TodoItem(text, box);
+        int priority = linearLayout.getChildCount();
+        TodoItem item = new TodoItem(text, box, priority);
         DraggableTodoView view = new DraggableTodoView(mContext, item);
         linearLayout.addView(view);
         mTodoViews.put(view.mId, view);
@@ -153,6 +160,25 @@ public class Quadrants {
             break;
         }
         return linearLayout;
+    }
+
+    /**
+     * Sets the priorities of todoItems based on their position in their
+     * quadrant
+     */
+    private void setPriorities() {
+        for (TodoBox box : TodoBox.values()) {
+            LinearLayout linearLayout = getLayout(box);
+
+            for (int index = 0; index < linearLayout.getChildCount(); index++) {
+                // *** TODO: Remove the class checking code (if statement) once
+                // we have a layout that doesn't have a text view at the top
+                if (linearLayout.getChildAt(index).getClass() == DraggableTodoView.class) {
+                    DraggableTodoView view = (DraggableTodoView) linearLayout.getChildAt(index);
+                    view.getItem().setPriority(index);
+                }
+            }
+        }
     }
 }
 

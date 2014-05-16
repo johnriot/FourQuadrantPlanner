@@ -21,8 +21,7 @@ public class FourQuadrantContentProvider extends ContentProvider {
 
     // Delete some or all data items
     @Override
-    public synchronized int delete(Uri uri, String selection,
-            String[] selectionArgs) {
+    public synchronized int delete(Uri uri, String selection, String[] selectionArgs) {
 
         int rowsDeleted = 0;
         SQLiteDatabase sqlDB = database.getWritableDatabase();
@@ -31,9 +30,8 @@ public class FourQuadrantContentProvider extends ContentProvider {
             rowsDeleted = sqlDB.delete(DataContract.TODO_TABLE, null, null);
         } else if (isItemUri(uri)) {
             Integer requestId = Integer.parseInt(uri.getLastPathSegment());
-            rowsDeleted = sqlDB.delete(DataContract.TODO_TABLE,
-                    DataContract._ID + "=" + requestId + " and " + selection,
-                    selectionArgs);
+            rowsDeleted = sqlDB.delete(DataContract.TODO_TABLE, DataContract._ID + "=" + requestId + " and "
+                    + selection, selectionArgs);
         }
 
         // return number of items deleted
@@ -55,14 +53,12 @@ public class FourQuadrantContentProvider extends ContentProvider {
     @Override
     public synchronized Uri insert(Uri uri, ContentValues values) {
         SQLiteDatabase sqlDB = database.getWritableDatabase();
-        if (// values.containsKey(DataContract._ID) &&
-        values.containsKey(DataContract.TODO_TEXT)
+        if (values.containsKey(DataContract.TODO_TEXT) && values.containsKey(DataContract.PRIORITY)
                 && values.containsKey(DataContract.REF_QUADRANTS_ID)) {
 
             long id = sqlDB.insert(DataContract.TODO_TABLE, null, values);
             getContext().getContentResolver().notifyChange(uri, null);
-            return Uri.withAppendedPath(DataContract.CONTENT_URI,
-                    String.valueOf(id));
+            return Uri.withAppendedPath(DataContract.CONTENT_URI, String.valueOf(id));
         }
         return null;
     }
@@ -71,8 +67,8 @@ public class FourQuadrantContentProvider extends ContentProvider {
     // all other parameters are ignored
 
     @Override
-    public synchronized Cursor query(Uri uri, String[] projection,
-            String selection, String[] selectionArgs, String sortOrder) {
+    public synchronized Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+            String sortOrder) {
 
         // Using SQLiteQueryBuilder instead of query() method
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
@@ -81,8 +77,7 @@ public class FourQuadrantContentProvider extends ContentProvider {
         queryBuilder.setTables(DataContract.TODO_TABLE);
 
         SQLiteDatabase localDb = database.getWritableDatabase();
-        Cursor cursor = queryBuilder.query(localDb,
-                DataContract.ALL_TODO_COLUMNS, selection, selectionArgs, null,
+        Cursor cursor = queryBuilder.query(localDb, DataContract.ALL_TODO_COLUMNS, selection, selectionArgs, null,
                 null, sortOrder);
 
         // make sure that potential listeners are getting notified
@@ -93,15 +88,13 @@ public class FourQuadrantContentProvider extends ContentProvider {
 
     // Update
     @Override
-    public synchronized int update(Uri uri, ContentValues values,
-            String selection, String[] selectionArgs) {
+    public synchronized int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 
         SQLiteDatabase sqlDB = database.getWritableDatabase();
         int numUpdates = 0;
         if (values.containsKey(DataContract.TODO_TEXT)) {
 
-            numUpdates = sqlDB.update(DataContract.TODO_TABLE, values,
-                    selection, null);
+            numUpdates = sqlDB.update(DataContract.TODO_TABLE, values, selection, null);
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return numUpdates;

@@ -154,7 +154,11 @@ public class DraggableTodoView extends TextView {
         } else {
             targetContainer.addView(clonedView);
         }
+        // Set the new priority and quadrant for the view
+        // clonedView.mTodoItem.setPriority(targetContainer.indexOfChild(clonedView));
+        // updateAllPriorities(targetContainer);
         clonedView.changeQuadrant(targetContainer.getId());
+
     }
 
     /**
@@ -189,4 +193,5 @@ public class DraggableTodoView extends TextView {
             break;
         }
     }
+
 }
