@@ -4,26 +4,31 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.DragShadowBuilder;
 import android.view.ViewParent;
+import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 // A TextView with a border that can be dragged and dropped
 // in different locations on the UI
-public class DraggableTodoView extends TextView {
+public class DraggableTodoView extends CheckedTextView {
     private static int ID = 0;
 
     private final TodoItem mTodoItem;
     private final Context mContext;
+    private static Drawable mCheckBox;
 
     public final int mId;
 
@@ -34,6 +39,7 @@ public class DraggableTodoView extends TextView {
         mContext = context;
         mTodoItem = item;
         mId = ID++;
+        setCheckBoxIcon();
         setText(item.getText());
         setBackgroundResource(R.drawable.back_blue);
         makeDraggable();
@@ -45,10 +51,22 @@ public class DraggableTodoView extends TextView {
         mContext = copyFrom.mContext;
         mTodoItem = copyFrom.mTodoItem;
         mId = copyFrom.mId;
+        setCheckBoxIcon();
         setText(mTodoItem.getText());
         setBackgroundResource(R.drawable.back_blue);
         makeDraggable();
         makeReorderable();
+    }
+
+    public void setCheckBoxIcon() {
+        if (mCheckBox == null) {
+            int[] attrs = { android.R.attr.listChoiceIndicatorMultiple };
+            TypedArray ta = getContext().getTheme().obtainStyledAttributes(attrs);
+            mCheckBox = ta.getDrawable(0);
+            ta.recycle();
+        }
+        setCheckMarkDrawable(mCheckBox);
+        acceptClicks();
     }
 
     // Return the encapsulated TodoItem
@@ -62,12 +80,39 @@ public class DraggableTodoView extends TextView {
         setText(text);
     }
 
+    /**
+     * Implement code for the checking and unchecking of the checkboxes of the
+     * CheckedTextView
+     */
+    public void acceptClicks() {
+
+        setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                /*
+                if (isChecked() == true) {
+                    DraggableTodoView.this.setChecked(false);
+                } else {
+                    DraggableTodoView.this.setChecked(true);
+                }
+                */
+
+                DraggableTodoView.this.toggle();
+
+            }
+        });
+    }
+
     // Allow the text view to be dragged across the UI
     public void makeDraggable() {
-        super.setOnTouchListener(new View.OnTouchListener() {
+        setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View view, MotionEvent event) {
+                // Need this to allow OnClick to consume touches
+                // mTouchConsumed = false;
                 switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_MOVE:
                     // Makes the original TextView invisible and creates
@@ -78,12 +123,19 @@ public class DraggableTodoView extends TextView {
                     view.setVisibility(View.INVISIBLE);
                     return false;
                 case MotionEvent.ACTION_DOWN:
-                    return true;
+                    boolean result = DraggableTodoView.this.onTouchEvent(event);
+                    // DraggableTodoView.super.onTouchEvent(event);
+                    // return !result;
+                    return !result;
                 case MotionEvent.ACTION_UP:
+                    // boolean result =
+                    // DraggableTodoView.this.onTouchEvent(event);
+                    // if (!result) {
                     int quadrant = Quadrants.boxToQuadrant(mTodoItem.getBox());
                     DialogFragment newFragment = TodoDialogFragment.newInstance(mTodoItem.getText(), quadrant, mId);
                     Activity activity = (Activity) mContext;
                     newFragment.show(activity.getFragmentManager(), "todoEditDialog");
+                    // }
                     return false;
                 default:
                     return false;
@@ -98,18 +150,20 @@ public class DraggableTodoView extends TextView {
      * down that group
      */
     public void makeReorderable() {
-        super.setOnDragListener(new View.OnDragListener() {
+        setOnDragListener(new View.OnDragListener() {
 
             @Override
             public boolean onDrag(View stationaryView, DragEvent event) {
                 switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_ENTERED: {
                     stationaryView.setBackgroundResource(R.drawable.back_red);
+                    setCheckBoxIcon();
                     break;
                 }
 
                 case DragEvent.ACTION_DRAG_EXITED: {
                     stationaryView.setBackgroundResource(R.drawable.back_blue);
+                    setCheckBoxIcon();
                     break;
                 }
 

@@ -39,13 +39,13 @@ public class MainActivity extends Activity implements TodoDialogFragment.NoticeD
         // in cases of pause-and-resume (e.g. press the home button and then
         // resume the application). Correct behaviour achieved having the read
         // method called here.
-        mQuadrants.readTextFromDatabase();
+        mQuadrants.readFromDatabase();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mQuadrants.writeTextToDatabase();
+        mQuadrants.writeToDatabase();
     }
 
     @Override
@@ -78,9 +78,9 @@ public class MainActivity extends Activity implements TodoDialogFragment.NoticeD
     @Override
     public void onDialogPositiveClick(TodoBox box, String text, int viewKey) {
         if (viewKey == -1) {
-            mQuadrants.addTodo(box, text);
+            mQuadrants.addDraggableTodo(box, text);
         } else {
-            mQuadrants.editTodo(box, text, viewKey);
+            mQuadrants.editDraggableTodo(box, text, viewKey);
         }
     }
 }

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Four Quadrant Planner</string>
-    <string name="action_add_todo">+</string>
+    <string name="app_name">4Q Planner</string>
+    <string name="action_add_todo">Add</string>
+    <string name="action_delete_todo">Delete</string>
     <string name="first_quadrant_heading">Urgent and Important</string>
     <string name="second_quadrant_heading">Not Urgent, Import</string>
     <string name="third_quadrant_heading">Urgent, Not Import</string>
