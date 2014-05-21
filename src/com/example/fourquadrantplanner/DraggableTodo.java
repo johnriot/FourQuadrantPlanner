@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.DragShadowBuilder;
+import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,6 +25,7 @@ public class DraggableTodo {
     public final int mId;
     private ViewGroup mTodoView;
     private TextView mTextView;
+    private CheckBox mCheckBox;
 
     /**
      * Constructor for the composition version of DraggableTodo
@@ -88,6 +90,9 @@ public class DraggableTodo {
         mTodoView = (RelativeLayout) inflater.inflate(R.layout.draggable_todo_view, null, false);
         mTextView = (TextView) mTodoView.findViewById(R.id.textView);
         mTextView.setText(mTodoItem.getText());
+        mCheckBox = (CheckBox) mTodoView.findViewById(R.id.checkBox);
+        captureCheckBoxClicks();
+        mCheckBox.setChecked(mTodoItem.isChecked());
         makeDraggable();
         makeReorderable();
         Quadrants.updateTodosMap(oldTodoView, mTodoView, this);
@@ -95,7 +100,6 @@ public class DraggableTodo {
 
     // Allow the text view to be dragged across the UI
     public void makeDraggable() {
-        // mTextView.setOnTouchListener(new View.OnTouchListener() {
         mTodoView.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -212,6 +216,30 @@ public class DraggableTodo {
         default:
             break;
         }
+    }
+
+    /**
+     * Implement code for the checking and unchecking of the checkboxes of the
+     * CheckedTextView
+     */
+    public void captureCheckBoxClicks() {
+
+        mCheckBox.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                if (mCheckBox.isChecked()) {
+                    mTodoItem.setChecked(true);
+                } else {
+                    mTodoItem.setChecked(false);
+                }
+
+                // Toast.makeText(mContext, "ChckBox clicked",
+                // Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     /**

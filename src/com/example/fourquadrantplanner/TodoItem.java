@@ -5,6 +5,7 @@ public class TodoItem {
     private String mText;
     private TodoBox mBox;
     private int mPriority;
+    private boolean mIsChecked;
 
     // Constructor using text and the TodoBox quadrant
     public TodoItem(String text, TodoBox box, int priority) {
@@ -47,5 +48,18 @@ public class TodoItem {
      */
     public int getPriority() {
         return mPriority;
+    }
+
+    /*
+     * Sets a boolean for the todoItem to indicate if the Checkbox is
+     * checked or not.
+     */
+
+    public void setChecked(boolean isChecked) {
+        mIsChecked = isChecked;
+    }
+
+    public boolean isChecked() {
+        return mIsChecked;
     }
 }
