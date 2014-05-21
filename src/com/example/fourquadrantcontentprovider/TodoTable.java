@@ -11,8 +11,8 @@ public class TodoTable {
     // Database creation SQL statement
     private static final String DATABASE_CREATE = "create table " + DataContract.TODO_TABLE + " (" + DataContract._ID
             + " integer primary key autoincrement, " + DataContract.TODO_TEXT + " text not null, "
-            + DataContract.PRIORITY + " integer not null, " + DataContract.REF_QUADRANTS_ID + " integer not null"
-            + ");";
+            + DataContract.PRIORITY + " integer not null, " + DataContract.TICKED + " integer not null, "
+            + DataContract.REF_QUADRANTS_ID + " integer not null" + ");";
 
     public static void onCreate(SQLiteDatabase database) {
         database.execSQL(DATABASE_CREATE);

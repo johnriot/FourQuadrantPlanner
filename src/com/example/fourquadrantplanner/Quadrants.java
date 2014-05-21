@@ -1,41 +1,26 @@
 package com.example.fourquadrantplanner;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.example.fourquadrantcontentprovider.DataContract;
-import com.example.fourquadrantcontentprovider.DataRecord;
-
-import android.app.Activity;
-import android.app.DialogFragment;
-import android.content.ClipData;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
+import android.app.*;
+import android.content.*;
 import android.database.Cursor;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.net.Uri;
-import android.text.Layout;
 import android.util.SparseArray;
-import android.view.DragEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.DragShadowBuilder;
+import android.view.*;
 import android.view.View.OnDragListener;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 enum TodoBox {
     TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
 }
 
 public class Quadrants {
-    private static SparseArray<DraggableTodo> mTodos = new SparseArray<DraggableTodo>();
+    private static Map<Integer, DraggableTodo> mTodos = new ConcurrentHashMap<Integer, DraggableTodo>();
     public static Context mContext;
 
     // Constructor, sets all quadrants as drag sinks
@@ -56,10 +41,11 @@ public class Quadrants {
 
         // Then rewrite everything back to the database
         ContentValues values = new ContentValues();
-        for (int i = 0, nsize = mTodos.size(); i < nsize; i++) {
-            TodoItem item = mTodos.valueAt(i).getItem();
+        for (DraggableTodo todo : mTodos.values()) {
+            TodoItem item = todo.getItem();
             values.put(DataContract.TODO_TEXT, item.getText());
             values.put(DataContract.PRIORITY, item.getPriority());
+            values.put(DataContract.TICKED, item.getIsTickedInt());
             values.put(DataContract.REF_QUADRANTS_ID, boxToQuadrant(item.getBox()));
             Uri recordUri = contentResolver.insert(DataContract.CONTENT_URI, values);
             values.clear();
@@ -75,52 +61,13 @@ public class Quadrants {
             do {
                 String text = c.getString(c.getColumnIndex(DataContract.TODO_TEXT));
                 int refQuadrants = Integer.parseInt(c.getString(c.getColumnIndex(DataContract.REF_QUADRANTS_ID)));
-                addDraggableTodo(quadrantToBox(refQuadrants), text);
+                int ticked = Integer.parseInt(c.getString(c.getColumnIndex(DataContract.TICKED)));
+                addDraggableTodo(quadrantToBox(refQuadrants), text, ticked);
                 // Toast.makeText(mContext, record, Toast.LENGTH_SHORT).show();
             } while (c.moveToNext());
             c.close();
         }
     }
-
-    /*
-    // Add a todoView to the UI and the todoItem to the List
-    // By default place it at the end
-    public void addTodo(TodoBox box, String text) {
-        LinearLayout linearLayout = getLayout(box);
-        int priority = linearLayout.getChildCount();
-        TodoItem item = new TodoItem(text, box, priority);
-        DraggableTodoView view = new DraggableTodoView(mContext, item);
-        linearLayout.addView(view);
-        mTodoViews.put(view.mId, view);
-    }
-
-    // Change a todo based on values entered in the dialog
-    public void editTodo(TodoBox box, String text, int viewKey) {
-        DraggableTodoView view = mTodoViews.get(viewKey);
-
-        // Change the box
-        if (box != view.getItem().getBox()) {
-            changeBox(view, box);
-        }
-
-        // Change the text
-        view.updateText(text);
-    }
-    */
-
-    /*
-    // Change the box for a DraggableTodoView both visually and on the TodoItem
-    public void changeBox(DraggableTodo view, TodoBox box) {
-        // Remove view from old box
-        LinearLayout layout = getLayout(view.getItem().getBox());
-        layout.removeView(view);
-
-        // Add view to new box
-        layout = getLayout(box);
-        layout.addView(view);
-        view.getItem().setBox(box);
-    }
-    */
 
     // Pops up a dialog for a new Todo Item
     public void createTodoDialog() {
@@ -201,14 +148,21 @@ public class Quadrants {
     /**
      * Add custom view to the layout
      */
-    public void addDraggableTodo(TodoBox box, String text) {
+    public void addDraggableTodo(TodoBox box, String text, int ticked) {
         LinearLayout linearLayout = getLayout(box);
         int priority = linearLayout.getChildCount();
-        TodoItem item = new TodoItem(text, box, priority);
+        TodoItem item = new TodoItem(text, box, priority, ticked);
         DraggableTodo todo = new DraggableTodo(mContext, item);
         todo.initialiseInContainer(linearLayout);
         todo.getView().setId(todo.mId);
         mTodos.put(todo.mId, todo);
+    }
+
+    /**
+     * Used to add a Todo from the dialog. TodoItems are unticked by default.
+     */
+    public void addDraggableTodo(TodoBox box, String text) {
+        addDraggableTodo(box, text, 0);
     }
 
     // Change a todo based on values entered in the dialog
@@ -218,7 +172,6 @@ public class Quadrants {
         // Change the box
         TodoBox oldBox = todo.getItem().getBox();
         if (newBox != oldBox) {
-            // changeBox(todo, box);
             getLayout(oldBox).removeView(todo.getView());
             todo.initialiseInContainer(this.getLayout(newBox));
             todo.getView().setId(todo.mId);
@@ -226,6 +179,22 @@ public class Quadrants {
 
         // Change the text on the Todo (data and displayed text)
         todo.setText(text);
+    }
+
+    /**
+     * Delete each Todo that is ticked and update the UI
+     */
+    public void deleteTickedTodos() {
+        for (DraggableTodo todo : mTodos.values()) {
+            if (todo != null && todo.getItem().isTicked()) {
+                // Remove the view from the collection
+                mTodos.remove(todo.mId);
+                // Remove the View from its UI Layout
+                View view = todo.getView();
+                ViewGroup owner = (ViewGroup) view.getParent();
+                owner.removeView(view);
+            }
+        }
     }
 
     /**
@@ -319,13 +288,6 @@ class QuadrantDragListener implements OnDragListener {
 
         // Check if point is inside view bounds
         if ((x > viewX && x < (viewX + view.getWidth())) && (y > viewY && y < (viewY + view.getHeight()))) {
-            // Point is in View
-            String record = "event: (" + x + ", " + y + "). ";
-            record += " viewTL: (" + viewX + ", " + viewY + "). ";
-            record += "viewBR: (" + (viewX + view.getWidth()) + ", " + (viewY + view.getHeight()) + "). ";
-            record += " viewWidth: " + view.getWidth() + ", view.getHeight()" + view.getHeight();
-            Toast.makeText(Quadrants.mContext, record, Toast.LENGTH_LONG).show();
-            System.out.println(record);
             return true;
         } else {
             return false;

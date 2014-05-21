@@ -92,7 +92,7 @@ public class DraggableTodo {
         mTextView.setText(mTodoItem.getText());
         mCheckBox = (CheckBox) mTodoView.findViewById(R.id.checkBox);
         captureCheckBoxClicks();
-        mCheckBox.setChecked(mTodoItem.isChecked());
+        mCheckBox.setChecked(mTodoItem.isTicked());
         makeDraggable();
         makeReorderable();
         Quadrants.updateTodosMap(oldTodoView, mTodoView, this);
@@ -230,9 +230,9 @@ public class DraggableTodo {
             public void onClick(View arg0) {
 
                 if (mCheckBox.isChecked()) {
-                    mTodoItem.setChecked(true);
+                    mTodoItem.setTicked(true);
                 } else {
-                    mTodoItem.setChecked(false);
+                    mTodoItem.setTicked(false);
                 }
 
                 // Toast.makeText(mContext, "ChckBox clicked",

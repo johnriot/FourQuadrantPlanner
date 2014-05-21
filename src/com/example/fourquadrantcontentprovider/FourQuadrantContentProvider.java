@@ -54,7 +54,7 @@ public class FourQuadrantContentProvider extends ContentProvider {
     public synchronized Uri insert(Uri uri, ContentValues values) {
         SQLiteDatabase sqlDB = database.getWritableDatabase();
         if (values.containsKey(DataContract.TODO_TEXT) && values.containsKey(DataContract.PRIORITY)
-                && values.containsKey(DataContract.REF_QUADRANTS_ID)) {
+                && values.containsKey(DataContract.TICKED) && values.containsKey(DataContract.REF_QUADRANTS_ID)) {
 
             long id = sqlDB.insert(DataContract.TODO_TABLE, null, values);
             getContext().getContentResolver().notifyChange(uri, null);
@@ -92,7 +92,8 @@ public class FourQuadrantContentProvider extends ContentProvider {
 
         SQLiteDatabase sqlDB = database.getWritableDatabase();
         int numUpdates = 0;
-        if (values.containsKey(DataContract.TODO_TEXT)) {
+        if (values.containsKey(DataContract.TODO_TEXT) || values.containsKey(DataContract.PRIORITY)
+                || values.containsKey(DataContract.TICKED)) {
 
             numUpdates = sqlDB.update(DataContract.TODO_TABLE, values, selection, null);
             getContext().getContentResolver().notifyChange(uri, null);

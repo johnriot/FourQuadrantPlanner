@@ -68,6 +68,9 @@ public class MainActivity extends Activity implements TodoDialogFragment.NoticeD
         case R.id.action_todo:
             mQuadrants.createTodoDialog();
             return true;
+        case R.id.action_delete:
+            mQuadrants.deleteTickedTodos();
+            return true;
         default:
             return false;
         }

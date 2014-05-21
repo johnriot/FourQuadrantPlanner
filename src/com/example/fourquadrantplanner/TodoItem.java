@@ -5,18 +5,19 @@ public class TodoItem {
     private String mText;
     private TodoBox mBox;
     private int mPriority;
-    private boolean mIsChecked;
+    private boolean mIsTicked;
 
     // Constructor using text and the TodoBox quadrant
-    public TodoItem(String text, TodoBox box, int priority) {
+    public TodoItem(String text, TodoBox box, int priority, int ticked) {
         mText = text;
         mBox = box;
         mPriority = priority;
+        mIsTicked = isTickedBool(ticked);
     }
 
     // Constructor using text and an integer representing the quadrant [1,4]
-    public TodoItem(String text, int quadrant, int priority) {
-        this(text, Quadrants.quadrantToBox(quadrant), priority);
+    public TodoItem(String text, int quadrant, int priority, int ticked) {
+        this(text, Quadrants.quadrantToBox(quadrant), priority, ticked);
     }
 
     public String getText() {
@@ -55,11 +56,28 @@ public class TodoItem {
      * checked or not.
      */
 
-    public void setChecked(boolean isChecked) {
-        mIsChecked = isChecked;
+    public void setTicked(boolean isTicked) {
+        mIsTicked = isTicked;
     }
 
-    public boolean isChecked() {
-        return mIsChecked;
+    public boolean isTicked() {
+        return mIsTicked;
+    }
+
+    public int getIsTickedInt() {
+        if (mIsTicked == true) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private static boolean isTickedBool(int isTicked) {
+        if (isTicked == 0) {
+            return false;
+        } else {
+            return true;
+        }
+
     }
 }

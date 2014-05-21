@@ -12,6 +12,7 @@ public final class DataContract {
     public static final String _ID = "_id";
     public static final String TODO_TEXT = "todo_item";
     public static final String PRIORITY = "priority";
+    public static final String TICKED = "ticked";
     public static final String REF_QUADRANTS_ID = "quadrants_id";
 
     public static final String QUADRANTS_TABLE = "quadrants_table";
@@ -32,7 +33,7 @@ public final class DataContract {
             + "/FourQuadrantContentProvider.data.text";
 
     // All columns of todo table
-    public static final String[] ALL_TODO_COLUMNS = { _ID, TODO_TEXT, PRIORITY, REF_QUADRANTS_ID };
+    public static final String[] ALL_TODO_COLUMNS = { _ID, TODO_TEXT, PRIORITY, TICKED, REF_QUADRANTS_ID };
 
     // All columns of quadrants table
     public static final String[] ALL_QUADRANT_COLUMNS = { QUADRANTS_ID, QUADRANTS_CATEGORY };
