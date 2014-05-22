@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Main Linear Layout, separates top two quadrants from bottom two quadrants -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+	android:focusableInTouchMode="true"
+	>
+
+   	<!-- Linear Layout for TOP two Quadrants -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        >
+
+	    <!-- Layout for Top Left Quadrant -->
+		<ScrollView
+		    android:layout_width="0dp"
+        	android:layout_height="fill_parent"
+        	android:layout_weight="1"
+        	android:requiresFadingEdge="vertical"
+        	android:fillViewport="true"
+		    >
+			<LinearLayout
+		        android:id="@+id/top_left_layout"
+		        android:layout_width="match_parent"
+	        	android:layout_height="fill_parent"
+		        android:background="@drawable/quadrant"
+		        android:padding="2sp"
+		        android:orientation="vertical"
+		        android:animateLayoutChanges="true"
+		        >
+
+			</LinearLayout> <!-- END Linear Layout for Top Left Quadrant -->
+		</ScrollView>
+		
+		
+	    <!-- Layout for Top Right Quadrant -->
+		<ScrollView
+		    android:layout_width="0dp"
+        	android:layout_height="fill_parent"
+        	android:layout_weight="1"
+        	android:requiresFadingEdge="vertical"
+        	android:fillViewport="true"
+		    >
+		    <LinearLayout
+		        android:id="@+id/top_right_layout"
+		        android:layout_width="match_parent"
+	        	android:layout_height="fill_parent"
+		        android:animateLayoutChanges="true"
+		        android:background="@drawable/quadrant"
+		        android:orientation="vertical"
+		        android:padding="2sp" >
+	
+				</LinearLayout> 
+			</ScrollView>
+			<!-- END Layout for Top Right Quadrant --> 
+       
+       </LinearLayout> <!-- END Linear Layout to separate top left quadrant from top right quadrant -->
+       
+    <!-- Layout for BOTTOM two Quadrants -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+	    <!-- Layout for Bottom Left Quadrant -->
+	    <ScrollView
+		    android:layout_width="0dp"
+        	android:layout_height="fill_parent"
+        	android:layout_weight="1"
+        	android:requiresFadingEdge="vertical"
+        	android:fillViewport="true"
+		    >
+		    <LinearLayout
+		        android:id="@+id/bottom_left_layout"
+		        android:layout_width="match_parent"
+	        	android:layout_height="fill_parent"
+		        android:background="@drawable/quadrant"
+		        android:padding="2sp"
+		        android:orientation="vertical"
+		        android:animateLayoutChanges="true" >
+
+			</LinearLayout> <!-- END Linear Layout for Bottom Left Quadrant -->
+		</ScrollView>
+
+	    <!-- Layout for Bottom Right Quadrant -->
+	    <ScrollView
+		    android:layout_width="0dp"
+        	android:layout_height="fill_parent"
+        	android:layout_weight="1"
+        	android:requiresFadingEdge="vertical"
+        	android:fillViewport="true"
+		    >
+		    <LinearLayout
+		        android:id="@+id/bottom_right_layout"
+		        android:layout_width="match_parent"
+	        	android:layout_height="fill_parent"
+		        android:background="@drawable/quadrant"
+		        android:padding="2sp"
+		        android:orientation="vertical"
+		        android:animateLayoutChanges="true"
+		        >"
+	        
+				</LinearLayout> <!-- END Linear Layout for Bottom Right Quadrant --> 
+       		</ScrollView>
+       	</LinearLayout> <!-- END Linear Layout to separate bottom left quadrant from bottom right quadrant -->
+       
+</LinearLayout>

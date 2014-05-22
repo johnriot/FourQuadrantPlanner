@@ -26,12 +26,13 @@ import android.widget.Toast;
 
 import com.example.fourquadrantcontentprovider.*;
 
-public class MainActivity extends Activity implements TodoDialogFragment.NoticeDialogListener {
+public class MainActivity extends Activity implements TodoDialogFragment.DialogListener {
     private Quadrants mQuadrants;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_main);
         mQuadrants = new Quadrants(this);
         // Moved readTextFromDatabase() here. When it was in onResume()
@@ -69,7 +70,7 @@ public class MainActivity extends Activity implements TodoDialogFragment.NoticeD
             mQuadrants.createTodoDialog();
             return true;
         case R.id.action_delete:
-            mQuadrants.deleteTickedTodos();
+            mQuadrants.promptConfirmDeletions();
             return true;
         default:
             return false;
@@ -86,4 +87,12 @@ public class MainActivity extends Activity implements TodoDialogFragment.NoticeD
             mQuadrants.editDraggableTodo(box, text, viewKey);
         }
     }
+
+    /**
+     * Callback from ConfirmDeletionFragment to delete ticked Todos
+     */
+    public void onConfirmDeletions() {
+        mQuadrants.deleteTickedTodos();
+    }
+
 }

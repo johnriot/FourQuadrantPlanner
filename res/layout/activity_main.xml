@@ -1,132 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#ff000000"
-    tools:context=".MainActivity" >
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
     
-    <!-- Main Linear Layout, separates top two quadrants from bottom two quadrants -->
-    <LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:orientation="vertical"
-		android:focusableInTouchMode="true" >
+    <View 
+        android:id="@+id/top_left_square"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/aqua"
+        />
+    
+    <View 
+        android:id="@+id/top_right_square"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/aqua"
+        />
 
-    	<!-- Linear Layout for TOP two Quadrants -->
-	    <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="0dp"
-	        android:layout_weight="1"
-	        android:orientation="horizontal" >
-	
-		    <!-- Linear Layout for Top Left Quadrant -->
-		    <LinearLayout
-		        android:id="@+id/top_left_layout"
-		        android:layout_width="0dp"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:background="#ffcccb"
-		        android:padding="2sp"
-		        android:orientation="vertical"
-		        android:animateLayoutChanges="true" >
-		        
-		        <TextView
-		            android:layout_width="match_parent"
-		            android:layout_height="wrap_content"
-		            android:background="#ff0000"
-		            android:gravity="left"
-		            android:padding="2sp"
-		            android:text="@string/first_quadrant_heading"
-		            android:textSize="14sp"
-		            android:textStyle="bold"/>
-
-			</LinearLayout> <!-- END Linear Layout for Top Left Quadrant -->
-	
-		    <!-- Linear Layout for Top Right Quadrant -->
-		    <LinearLayout
-		        android:id="@+id/top_right_layout"
-		        android:layout_width="0dp"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:background="#90ee90"
-		        android:padding="2sp"
-		        android:orientation="vertical"
-		        android:animateLayoutChanges="true" >
-		        
-		        <TextView
-		            android:layout_width="match_parent"
-		            android:layout_height="wrap_content"
-		            android:background="#2aab02"
-		            android:gravity="left"
-		            android:padding="2sp"
-		            android:text="@string/second_quadrant_heading" 
-		            android:textSize="14sp"
-		            android:textStyle="bold"/>
-
-				</LinearLayout> 
-				<!-- END Linear Layout for Top Right Quadrant --> 
+    <TextView
+        android:id="@+id/urgency_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:textSize="14sp"
+    	android:textStyle="bold"
+    	android:textColor="@color/white"
+        android:text="Urgency"
+        android:gravity="center"
+        android:background="@color/aqua"
+        />
+    
+    <TextView
+        android:id="@+id/urgency_more"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_toRightOf="@+id/top_left_square"
+        android:layout_toLeftOf="@+id/urgency_bar"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:text="more"
+        android:gravity="bottom|center_horizontal"
+        android:background="@color/aqua"
+        />
+    
+    <TextView
+        android:id="@+id/urgency_less"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_toRightOf="@+id/urgency_bar"
+        android:layout_toLeftOf="@+id/top_right_square"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:text="less"
+        android:gravity="bottom|center_horizontal"
+        android:background="@color/aqua"
+        />
+    
+    <View 
+        android:id="@+id/bottom_left_square"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/aqua"
+        />
+   
+    <TextView
+        android:id="@+id/importance_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="20dp" 
+        android:layout_centerInParent="true"
+        android:layout_alignParentLeft="true"
+        android:textSize="14sp"
+    	android:textStyle="bold"
+    	android:textColor="@color/white"
+        android:text="@string/importance_bar"
+        android:gravity="center"
+        android:background="@color/aqua"
+        />
+    
+    <TextView
+        android:id="@+id/importance_more"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/importance_bar"
+        android:layout_below="@+id/top_left_square"
+        android:textSize="10sp"
+        android:textColor="@color/white"
+        android:text="m\no\nr\ne"
+        android:gravity="center"
+        android:background="@color/aqua"
+        />
+    
+    <TextView
+        android:id="@+id/importance_less"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/importance_bar"
+        android:layout_above="@+id/bottom_left_square"
+        android:textSize="10sp"
+        android:textColor="@color/white"
+        android:text="l\ne\ns\ns"
+        android:gravity="center"
+        android:background="@color/aqua"
+        />
+    
+    <View
+        android:id="@+id/bottom_border"
+        android:layout_toRightOf="@+id/sign_less_bottom_left"
+        android:layout_alignParentBottom="true"
+        android:layout_height="20dp"
+        android:layout_width="match_parent"
+        android:background="@color/aqua"
+        />
+    
+    <View 
+        android:id="@+id/right_border"
+        android:layout_below="@+id/sign_less_top_right"
+        android:layout_above="@+id/bottom_border"
+        android:layout_alignParentRight="true"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:background="@color/aqua"
+        />
+    
+    <include
+        layout="@layout/quadrants"
+        android:layout_below="@+id/urgency_bar"
+        android:layout_toRightOf="@+id/importance_bar"
+        android:layout_toLeftOf="@+id/right_border"
+        android:layout_above="@+id/bottom_border"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         
-        </LinearLayout> <!-- END Linear Layout to separate top left quadrant from top right quadrant -->
-        
-	    <!-- Linear Layout for BOTTOM two Quadrants -->
-	    <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="0dp"
-	        android:layout_weight="1"
-	        android:orientation="horizontal" >
-	
-		    <!-- Linear Layout for Bottom Left Quadrant -->
-		    <LinearLayout
-		        android:id="@+id/bottom_left_layout"
-		        android:layout_width="0dp"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:background="#ffc87a"
-		        android:padding="2sp"
-		        android:orientation="vertical"
-		        android:animateLayoutChanges="true" >
-		        
-		        <TextView
-		            android:layout_width="match_parent"
-		            android:layout_height="wrap_content"
-		            android:background="#ffa500"
-		            android:gravity="left"
-		            android:padding="2sp"
-		            android:text="@string/third_quadrant_heading" 
-		            android:textSize="14sp"
-		            android:textStyle="bold"/>
-
-			</LinearLayout> <!-- END Linear Layout for Bottom Left Quadrant -->
-	
-		    <!-- Linear Layout for Bottom Right Quadrant -->
-		    <LinearLayout
-		        android:id="@+id/bottom_right_layout"
-		        android:layout_width="0dp"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:background="#ffff80"
-		        android:padding="2sp"
-		        android:orientation="vertical"
-		        android:animateLayoutChanges="true" >
-		        
-		        <TextView
-		            android:layout_width="match_parent"
-		            android:layout_height="wrap_content"
-		            android:gravity="left"
-		            android:padding="2sp"
-		            android:background="#cccc00"
-		            android:text="@string/fourth_quadrant_heading" 
-		            android:textSize="14sp"
-		            android:textStyle="bold"/>
-	        
-				</LinearLayout> <!-- END Linear Layout for Bottom Right Quadrant --> 
-        
-        </LinearLayout> <!-- END Linear Layout to separate bottom left quadrant from bottom right quadrant -->
-        
-	</LinearLayout>
+        />
 
 </RelativeLayout>

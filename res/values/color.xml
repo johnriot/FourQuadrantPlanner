@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 
+    <color name="aqua">#66CCCC</color>
+     -->
+    <color name="aqua">#6d84b4</color>
+    <color name="facebook_blue">#6d84b4</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="light_grey">#ededed</color>
+    <color name="light_facebook_blue">#e1e6f0</color>
+    <color name="red">#ff0000</color>
+    <color name="green">#adff2f</color>
+    <color name="light_green">#fbfff6</color>
+    <color name="mustard">#dddd00</color>
+</resources>

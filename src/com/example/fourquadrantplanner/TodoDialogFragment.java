@@ -6,8 +6,11 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
@@ -38,12 +41,12 @@ public class TodoDialogFragment extends DialogFragment {
     }
 
     // A class creating this dialog must implement its method
-    public interface NoticeDialogListener {
+    public interface DialogListener {
         public void onDialogPositiveClick(TodoBox box, String text, int ViewKey);
     }
 
     // Use this instance of the interface to deliver action events
-    NoticeDialogListener mListener;
+    DialogListener mListener;
 
     // Override the Fragment.onAttach() method to instantiate the
     // NoticeDialogListener
@@ -54,7 +57,7 @@ public class TodoDialogFragment extends DialogFragment {
         try {
             // Instantiate the NoticeDialogListener so we can send events to the
             // host
-            mListener = (NoticeDialogListener) activity;
+            mListener = (DialogListener) activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString() + " must implement NoticeDialogListener");
@@ -71,11 +74,41 @@ public class TodoDialogFragment extends DialogFragment {
         // editText, in the case of an 'edit note' operation
         final Bundle bundle = getArguments();
         final EditText eText = (EditText) v.findViewById(R.id.todo_text);
-        if (bundle != null && (mDisplayText = getArguments().getString(KEY_DIALOG_TODO_TEXT)) != null) {
-            mDisplayText = getArguments().getString(KEY_DIALOG_TODO_TEXT);
-            mQuadrant = getArguments().getInt(KEY_DIALOG_TODO_QUADRANT);
-            mViewKey = getArguments().getInt(KEY_DIALOG_TODO_INDEX);
+        if (bundle != null && (mDisplayText = bundle.getString(KEY_DIALOG_TODO_TEXT)) != null) {
+            mDisplayText = bundle.getString(KEY_DIALOG_TODO_TEXT);
+            mQuadrant = bundle.getInt(KEY_DIALOG_TODO_QUADRANT);
+            mViewKey = bundle.getInt(KEY_DIALOG_TODO_INDEX);
             eText.setText(mDisplayText);
+
+            // Make the cursor visible once the user touches the text
+            eText.setOnTouchListener(new OnTouchListener() {
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        // Get the EditText and Layout
+                        EditText et = (EditText) v;
+                        et.setCursorVisible(true);
+                        Layout layout = ((EditText) v).getLayout();
+                        // Find the cursor offset vertically and horizontally
+                        // and put the cursor in the correct position.
+                        float x = event.getX() + et.getScrollX();
+                        float y = event.getY() + et.getScrollY();
+                        int line = layout.getLineForVertical((int) y);
+                        int offset = layout.getOffsetForHorizontal(line, x);
+                        if (offset > 0)
+                            if (x > layout.getLineMax(0))
+                                eText.setSelection(offset); // touch was at end
+                                                            // of text
+                            else
+                                eText.setSelection(offset - 1);
+
+                        break;
+                    }
+                    return false;
+                }
+            });
         }
 
         // Select the appropriate radio button if we are editing a TodoItem

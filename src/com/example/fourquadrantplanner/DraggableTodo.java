@@ -8,6 +8,7 @@ import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
@@ -110,25 +111,44 @@ public class DraggableTodo {
                     // a copy that follows your finger as you drag
                     ClipData data = ClipData.newPlainText("", "");
                     DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                    // int[] viewPos = new int[2];
-                    // view.getLocationOnScreen(viewPos);
                     view.startDrag(data, shadowBuilder, view, 0);
                     view.setVisibility(View.INVISIBLE);
                     return false;
                 case MotionEvent.ACTION_DOWN:
+                    view.setBackgroundResource(R.drawable.border_green);
                     return true;
                 case MotionEvent.ACTION_UP:
                     int quadrant = Quadrants.boxToQuadrant(mTodoItem.getBox());
                     DialogFragment newFragment = TodoDialogFragment.newInstance(mTodoItem.getText(), quadrant, mId);
                     Activity activity = (Activity) mContext;
                     newFragment.show(activity.getFragmentManager(), "todoEditDialog");
+                    view.setBackgroundResource(R.drawable.bottom_border_black);
                     return false;
                 default:
+                    view.setBackgroundResource(R.drawable.bottom_border_black);
                     return false;
                 }
             }
 
         });
+
+        /*
+        mTodoView.setOnLongClickListener(new OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View view) {
+                // Makes the original TextView invisible and creates
+                // a copy that follows your finger as you drag
+                ClipData data = ClipData.newPlainText("", "");
+                DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                view.startDrag(data, shadowBuilder, view, 0);
+                view.setVisibility(View.INVISIBLE);
+                Toast.makeText(mContext, "onLongClick", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+        });
+        */
     }
 
     /**
@@ -143,12 +163,16 @@ public class DraggableTodo {
             public boolean onDrag(View stationaryView, DragEvent event) {
                 switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_ENTERED: {
-                    stationaryView.setBackgroundResource(R.drawable.back_red);
+                    ViewGroup quadrant = (ViewGroup) stationaryView.getParent();
+                    quadrant.setBackgroundResource(R.drawable.quadrant);
+                    stationaryView.setBackgroundResource(R.drawable.top_border_red);
                     break;
                 }
 
                 case DragEvent.ACTION_DRAG_EXITED: {
-                    stationaryView.setBackgroundResource(R.drawable.back_blue);
+                    ViewGroup quadrant = (ViewGroup) stationaryView.getParent();
+                    quadrant.setBackgroundResource(R.drawable.quadrant_to_drop);
+                    stationaryView.setBackgroundResource(R.drawable.bottom_border_black);
                     break;
                 }
 
@@ -156,7 +180,9 @@ public class DraggableTodo {
                     // Redraw the moving view in its new location
                     ViewGroup movingView = (ViewGroup) event.getLocalState();
                     DraggableTodo movingTodo = Quadrants.getDraggableTodo(movingView);
-                    movingTodo.redrawInNewLocation((ViewGroup) stationaryView.getParent(), (ViewGroup) stationaryView);
+                    ViewGroup quadrant = (ViewGroup) stationaryView.getParent();
+                    quadrant.setBackgroundResource(R.drawable.quadrant);
+                    movingTodo.redrawInNewLocation(quadrant, (ViewGroup) stationaryView);
                     return true;
                 }
 
@@ -164,7 +190,6 @@ public class DraggableTodo {
                     // If the drag is a failure, then make the view visible in
                     // the original location
                     if (!event.getResult()) {
-                        // mTodoView = (RelativeLayout) event.getLocalState();
                         ViewGroup movingView = (ViewGroup) event.getLocalState();
                         DraggableTodo movingTodo = Quadrants.getDraggableTodo(movingView);
                         movingTodo.setVisible();
@@ -189,7 +214,7 @@ public class DraggableTodo {
 
         if (targetView != null) {
             initialiseInContainer(targetContainer, targetView);
-            targetView.setBackgroundResource(R.drawable.back_blue);
+            targetView.setBackgroundResource(R.drawable.bottom_border_black);
         } else {
             initialiseInContainer(targetContainer);
         }

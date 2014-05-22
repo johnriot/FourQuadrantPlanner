@@ -100,25 +100,25 @@ public class Quadrants {
     }
 
     // Gets the layout for the given box
-    private LinearLayout getLayout(TodoBox box) {
-        LinearLayout linearLayout = null;
+    private ViewGroup getLayout(TodoBox box) {
+        ViewGroup group = null;
         switch (box) {
         case TOP_LEFT:
-            linearLayout = (LinearLayout) ((Activity) mContext).findViewById(R.id.top_left_layout);
+            group = (ViewGroup) ((Activity) mContext).findViewById(R.id.top_left_layout);
             break;
         case TOP_RIGHT:
-            linearLayout = (LinearLayout) ((Activity) mContext).findViewById(R.id.top_right_layout);
+            group = (ViewGroup) ((Activity) mContext).findViewById(R.id.top_right_layout);
             break;
         case BOTTOM_LEFT:
-            linearLayout = (LinearLayout) ((Activity) mContext).findViewById(R.id.bottom_left_layout);
+            group = (ViewGroup) ((Activity) mContext).findViewById(R.id.bottom_left_layout);
             break;
         case BOTTOM_RIGHT:
-            linearLayout = (LinearLayout) ((Activity) mContext).findViewById(R.id.bottom_right_layout);
+            group = (ViewGroup) ((Activity) mContext).findViewById(R.id.bottom_right_layout);
             break;
         default:
             break;
         }
-        return linearLayout;
+        return group;
     }
 
     /**
@@ -127,14 +127,14 @@ public class Quadrants {
      */
     private void setPriorities() {
         for (TodoBox box : TodoBox.values()) {
-            LinearLayout linearLayout = getLayout(box);
+            ViewGroup layout = getLayout(box);
 
-            for (int index = 0; index < linearLayout.getChildCount(); index++) {
+            for (int index = 0; index < layout.getChildCount(); index++) {
                 // *** TODO: Remove the class checking code (if statement) once
                 // we have a layout that doesn't have a text view at the top
-                Class cl = linearLayout.getChildAt(index).getClass();
+                Class cl = layout.getChildAt(index).getClass();
                 if (cl == RelativeLayout.class) {
-                    RelativeLayout view = (RelativeLayout) linearLayout.getChildAt(index);
+                    RelativeLayout view = (RelativeLayout) layout.getChildAt(index);
                     DraggableTodo todo = Quadrants.getDraggableTodo(view);
                     if (todo != null) {
                         todo.getItem().setPriority(index);
@@ -149,11 +149,11 @@ public class Quadrants {
      * Add custom view to the layout
      */
     public void addDraggableTodo(TodoBox box, String text, int ticked) {
-        LinearLayout linearLayout = getLayout(box);
-        int priority = linearLayout.getChildCount();
+        ViewGroup layout = getLayout(box);
+        int priority = layout.getChildCount();
         TodoItem item = new TodoItem(text, box, priority, ticked);
         DraggableTodo todo = new DraggableTodo(mContext, item);
-        todo.initialiseInContainer(linearLayout);
+        todo.initialiseInContainer(layout);
         todo.getView().setId(todo.mId);
         mTodos.put(todo.mId, todo);
     }
@@ -179,6 +179,28 @@ public class Quadrants {
 
         // Change the text on the Todo (data and displayed text)
         todo.setText(text);
+    }
+
+    /**
+     * Pop up a confirmation dialog to confirm the deletion of the ticked Todos
+     */
+    public void promptConfirmDeletions() {
+        DialogFragment confirmDialog = ConfirmDeletionFragment.newInstance(countTickedTodos());
+        confirmDialog.show(((Activity) mContext).getFragmentManager(), "confirmDialog");
+    }
+
+    /**
+     * Count the number of ticked todos from the mTodos Map
+     * 
+     */
+    private int countTickedTodos() {
+        int tickedTodos = 0;
+        for (DraggableTodo todo : mTodos.values()) {
+            if (todo.getItem().isTicked()) {
+                tickedTodos++;
+            }
+        }
+        return tickedTodos;
     }
 
     /**
@@ -234,10 +256,14 @@ class QuadrantDragListener implements OnDragListener {
         case DragEvent.ACTION_DRAG_STARTED:
             break;
         case DragEvent.ACTION_DRAG_ENTERED:
+            targetQuadrant.setBackgroundResource(R.drawable.quadrant_to_drop);
             break;
         case DragEvent.ACTION_DRAG_EXITED:
+            targetQuadrant.setBackgroundResource(R.drawable.quadrant);
             break;
         case DragEvent.ACTION_DROP: {
+            // Restore the quadrant colour
+            targetQuadrant.setBackgroundResource(R.drawable.quadrant);
 
             // Find the moving view and its associated DraggableTodo
             ViewGroup movingView = (ViewGroup) event.getLocalState();
