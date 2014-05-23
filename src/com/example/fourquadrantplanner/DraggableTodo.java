@@ -269,7 +269,6 @@ public class DraggableTodo {
                     ViewGroup quadrant = (ViewGroup) stationaryView.getParent();
                     quadrant.setBackgroundResource(R.drawable.quadrant);
                     movingTodo.redrawInNewLocation(quadrant, (ViewGroup) stationaryView);
-                    Quadrants.restoreAllOriginalBackgrounds();
                     return true;
                 }
 
@@ -281,6 +280,8 @@ public class DraggableTodo {
                         DraggableTodo movingTodo = Quadrants.getDraggableTodo(movingView);
                         movingTodo.setVisible();
                     }
+                    Quadrants.restoreAllOriginalBackgrounds();
+                    break;
                 }
                 default:
                     break;

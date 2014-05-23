@@ -15,7 +15,12 @@
     <string name="q2_radio_box">Q2</string>
     <string name="q3_radio_box">Q3</string>
     <string name="q4_radio_box">Q4</string>
-    <string name="delete_ticked">Delete All Ticked Todos?</string>
-    <string name="importance_bar">I\nm\np\no\nr\nt\na\nn\nc\ne</string>
-
+    <string name="delete_ticked">Delete All %d Ticked Todos?</string>
+    <string name="importance_bar">\u0020 \nI\nm\np\no\nr\nt\na\nn\nc\ne\n \u0020</string>
+	<string name="urgency_bar">Urgency</string>
+	<string name="more">more</string>
+	<string name="less">less</string>
+	<string name="vertical_more">m\no\nr\ne</string>
+	<string name="vertical_less">l\ne\ns\ns</string>
+	
 </resources>

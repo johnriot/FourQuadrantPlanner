@@ -26,7 +26,7 @@ public class ConfirmDeletionFragment extends DialogFragment {
         String message = getActivity().getString(R.string.delete_ticked);
         if (args != null) {
             int numTicked = args.getInt(KEY_NUMBER_TODOS_TICKED);
-            message += " (" + numTicked + ")";
+            message = String.format(message, numTicked);
         }
         return new AlertDialog.Builder(getActivity()).setMessage(message).setCancelable(false)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

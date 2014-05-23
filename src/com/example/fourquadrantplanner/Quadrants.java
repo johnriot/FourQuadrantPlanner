@@ -278,7 +278,6 @@ class QuadrantDragListener implements OnDragListener {
         case DragEvent.ACTION_DROP: {
             // Restore the quadrant colour and all todo borders
             targetQuadrant.setBackgroundResource(R.drawable.quadrant);
-            Quadrants.restoreAllOriginalBackgrounds();
 
             // Find the moving view and its associated DraggableTodo
             ViewGroup movingView = (ViewGroup) event.getLocalState();

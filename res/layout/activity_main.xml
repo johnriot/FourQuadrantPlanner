@@ -32,7 +32,7 @@
         android:textSize="14sp"
     	android:textStyle="bold"
     	android:textColor="@color/white"
-        android:text="Urgency"
+        android:text="@string/urgency_bar"
         android:gravity="center"
         android:background="@color/aqua"
         />
@@ -45,7 +45,7 @@
         android:layout_toLeftOf="@+id/urgency_bar"
         android:textSize="12sp"
         android:textColor="@color/white"
-        android:text="more"
+        android:text="@string/more"
         android:gravity="bottom|center_horizontal"
         android:background="@color/aqua"
         />
@@ -58,7 +58,7 @@
         android:layout_toLeftOf="@+id/top_right_square"
         android:textSize="12sp"
         android:textColor="@color/white"
-        android:text="less"
+        android:text="@string/less"
         android:gravity="bottom|center_horizontal"
         android:background="@color/aqua"
         />
@@ -94,7 +94,7 @@
         android:layout_below="@+id/top_left_square"
         android:textSize="10sp"
         android:textColor="@color/white"
-        android:text="m\no\nr\ne"
+        android:text="@string/vertical_more"
         android:gravity="center"
         android:background="@color/aqua"
         />
@@ -107,14 +107,13 @@
         android:layout_above="@+id/bottom_left_square"
         android:textSize="10sp"
         android:textColor="@color/white"
-        android:text="l\ne\ns\ns"
+        android:text="@string/vertical_less"
         android:gravity="center"
         android:background="@color/aqua"
         />
     
     <View
         android:id="@+id/bottom_border"
-        android:layout_toRightOf="@+id/sign_less_bottom_left"
         android:layout_alignParentBottom="true"
         android:layout_height="20dp"
         android:layout_width="match_parent"
@@ -123,7 +122,6 @@
     
     <View 
         android:id="@+id/right_border"
-        android:layout_below="@+id/sign_less_top_right"
         android:layout_above="@+id/bottom_border"
         android:layout_alignParentRight="true"
         android:layout_width="20dp"
