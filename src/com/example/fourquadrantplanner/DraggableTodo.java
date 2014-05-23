@@ -165,7 +165,7 @@ public class DraggableTodo {
                 case DragEvent.ACTION_DRAG_ENTERED: {
                     ViewGroup quadrant = (ViewGroup) stationaryView.getParent();
                     quadrant.setBackgroundResource(R.drawable.quadrant);
-                    stationaryView.setBackgroundResource(R.drawable.top_border_red);
+                    stationaryView.setBackgroundResource(R.drawable.top_border_mint);
                     break;
                 }
 

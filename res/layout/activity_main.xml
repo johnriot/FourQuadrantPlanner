@@ -131,15 +131,23 @@
         android:background="@color/aqua"
         />
     
-    <include
-        layout="@layout/quadrants"
+    <LinearLayout
         android:layout_below="@+id/urgency_bar"
         android:layout_toRightOf="@+id/importance_bar"
         android:layout_toLeftOf="@+id/right_border"
         android:layout_above="@+id/bottom_border"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        
-        />
+        android:background="@drawable/quadrant"
+        android:padding="1dip" 
+        >
+    
+	    <include
+	        layout="@layout/quadrants"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        />
+    
+    </LinearLayout>
 
 </RelativeLayout>

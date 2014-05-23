@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+	<!-- Make the border all around black -->
 	<item>
 	    <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
 		   <solid android:color="@color/white" />
@@ -7,9 +8,10 @@
 		</shape>
 	</item>
 	
+	<!-- Get rid of black border except on bottom and top edges --> 
 	<item
 	    android:bottom="1dp"
-	    android:top="0dp"
+	    android:top="1dp"
         android:left="0dp"
         android:right="0dp"> 
 	      <shape 
@@ -19,13 +21,14 @@
 	        </shape>
 	</item>
 	
+
 	<item android:top="1dp"
 	    android:bottom="-2dp"
         android:left="-2dp"
         android:right="-2dp"> 
 	      <shape 
 	        android:shape="rectangle">
-	            <stroke android:width="1dp" android:color="@color/red" />
+	            <stroke android:width="1dp" android:color="@color/metallic_mint" />
 	            <solid android:color="#00000000" />
 	        </shape>
 	</item>

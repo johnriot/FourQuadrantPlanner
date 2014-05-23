@@ -18,13 +18,13 @@ public final class R {
         public static final int aqua=0x7f040000;
         public static final int black=0x7f040002;
         public static final int facebook_blue=0x7f040001;
-        public static final int green=0x7f040007;
         public static final int light_facebook_blue=0x7f040005;
         public static final int light_green=0x7f040008;
         public static final int light_grey=0x7f040004;
+        public static final int metallic_mint=0x7f040006;
         public static final int mustard=0x7f040009;
-        public static final int red=0x7f040006;
         public static final int white=0x7f040003;
+        public static final int yellowy_green=0x7f040007;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -39,10 +39,11 @@ public final class R {
     public static final class drawable {
         public static final int border_green=0x7f020000;
         public static final int bottom_border_black=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
-        public static final int quadrant=0x7f020003;
-        public static final int quadrant_to_drop=0x7f020004;
-        public static final int top_border_red=0x7f020005;
+        public static final int bottom_thick_black=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int quadrant=0x7f020004;
+        public static final int quadrant_to_drop=0x7f020005;
+        public static final int top_border_mint=0x7f020006;
     }
     public static final class id {
         public static final int action_delete=0x7f090019;

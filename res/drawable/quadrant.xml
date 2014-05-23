@@ -5,7 +5,7 @@
    <solid android:color="@color/light_facebook_blue" />
  
   <stroke
-      android:width="1dip"
+      android:width="2dip"
       android:color="@color/black"/>
 </shape>
 
