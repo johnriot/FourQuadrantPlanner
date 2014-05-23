@@ -57,6 +57,7 @@ public class Quadrants {
         Cursor c = mContext.getContentResolver().query(DataContract.CONTENT_URI, null, null, null,
                 DataContract.PRIORITY);
         mTodos.clear();
+        removeAllViews();
         if (c != null && c.moveToFirst()) {
             do {
                 String text = c.getString(c.getColumnIndex(DataContract.TODO_TEXT));
@@ -66,6 +67,16 @@ public class Quadrants {
                 // Toast.makeText(mContext, record, Toast.LENGTH_SHORT).show();
             } while (c.moveToNext());
             c.close();
+        }
+    }
+
+    /**
+     * Removes all views from the UI
+     */
+    private void removeAllViews() {
+        for (TodoBox box : TodoBox.values()) {
+            ViewGroup layout = getLayout(box);
+            layout.removeAllViews();
         }
     }
 
@@ -128,18 +139,11 @@ public class Quadrants {
     private void setPriorities() {
         for (TodoBox box : TodoBox.values()) {
             ViewGroup layout = getLayout(box);
-
             for (int index = 0; index < layout.getChildCount(); index++) {
-                // *** TODO: Remove the class checking code (if statement) once
-                // we have a layout that doesn't have a text view at the top
-                Class cl = layout.getChildAt(index).getClass();
-                if (cl == RelativeLayout.class) {
-                    RelativeLayout view = (RelativeLayout) layout.getChildAt(index);
-                    DraggableTodo todo = Quadrants.getDraggableTodo(view);
-                    if (todo != null) {
-                        todo.getItem().setPriority(index);
-                    }
-
+                RelativeLayout view = (RelativeLayout) getLayout(box).getChildAt(index);
+                DraggableTodo todo = Quadrants.getDraggableTodo(view);
+                if (todo != null) {
+                    todo.getItem().setPriority(index);
                 }
             }
         }
@@ -222,7 +226,7 @@ public class Quadrants {
     /**
      * Find the DraggableTodo based on its associated ViewGroup
      */
-    public static DraggableTodo getDraggableTodo(ViewGroup view) {
+    public static DraggableTodo getDraggableTodo(View view) {
         return mTodos.get(view.getId());
     }
 
@@ -236,6 +240,16 @@ public class Quadrants {
         }
         newTodoView.setId(todo.mId);
         mTodos.put(newTodoView.getId(), todo);
+    }
+
+    /**
+     * Cycles through every DraggableTodo and restores the background if it has
+     * changed during the drag-and-drop action
+     */
+    public static void restoreAllOriginalBackgrounds() {
+        for (DraggableTodo todo : mTodos.values()) {
+            todo.restoreOriginalBackground();
+        }
     }
 }
 
@@ -262,8 +276,9 @@ class QuadrantDragListener implements OnDragListener {
             targetQuadrant.setBackgroundResource(R.drawable.quadrant);
             break;
         case DragEvent.ACTION_DROP: {
-            // Restore the quadrant colour
+            // Restore the quadrant colour and all todo borders
             targetQuadrant.setBackgroundResource(R.drawable.quadrant);
+            Quadrants.restoreAllOriginalBackgrounds();
 
             // Find the moving view and its associated DraggableTodo
             ViewGroup movingView = (ViewGroup) event.getLocalState();

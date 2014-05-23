@@ -44,6 +44,8 @@ public final class R {
         public static final int quadrant=0x7f020004;
         public static final int quadrant_to_drop=0x7f020005;
         public static final int top_border_mint=0x7f020006;
+        public static final int top_bottom_border_black=0x7f020007;
+        public static final int white_background=0x7f020008;
     }
     public static final class id {
         public static final int action_delete=0x7f090019;

@@ -40,7 +40,10 @@ public class MainActivity extends Activity implements TodoDialogFragment.DialogL
         // in cases of pause-and-resume (e.g. press the home button and then
         // resume the application). Correct behaviour achieved having the read
         // method called here.
-        mQuadrants.readFromDatabase();
+
+        // ADDED REMOVE VIEWS CODE TO readFromDatabase() and moved this back to
+        // onResume()
+        // mQuadrants.readFromDatabase();
     }
 
     @Override
@@ -52,7 +55,7 @@ public class MainActivity extends Activity implements TodoDialogFragment.DialogL
     @Override
     protected void onResume() {
         super.onResume();
-        // mQuadrants.readTextFromDatabase();
+        mQuadrants.readFromDatabase();
     }
 
     @Override

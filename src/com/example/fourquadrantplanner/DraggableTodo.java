@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -27,6 +28,7 @@ public class DraggableTodo {
     private ViewGroup mTodoView;
     private TextView mTextView;
     private CheckBox mCheckBox;
+    private Drawable mOldBackground = null;
 
     /**
      * Constructor for the composition version of DraggableTodo
@@ -106,24 +108,29 @@ public class DraggableTodo {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 switch (event.getActionMasked()) {
-                case MotionEvent.ACTION_MOVE:
+                case MotionEvent.ACTION_MOVE: {
                     // Makes the original TextView invisible and creates
                     // a copy that follows your finger as you drag
                     ClipData data = ClipData.newPlainText("", "");
                     DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
                     view.startDrag(data, shadowBuilder, view, 0);
                     view.setVisibility(View.INVISIBLE);
+                    // Draw the top border on the element below the one being
+                    // moved
+                    redrawViewBelowMovingView(view);
                     return false;
+                }
                 case MotionEvent.ACTION_DOWN:
                     view.setBackgroundResource(R.drawable.border_green);
                     return true;
-                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_UP: {
                     int quadrant = Quadrants.boxToQuadrant(mTodoItem.getBox());
                     DialogFragment newFragment = TodoDialogFragment.newInstance(mTodoItem.getText(), quadrant, mId);
                     Activity activity = (Activity) mContext;
                     newFragment.show(activity.getFragmentManager(), "todoEditDialog");
                     view.setBackgroundResource(R.drawable.bottom_border_black);
                     return false;
+                }
                 default:
                     view.setBackgroundResource(R.drawable.bottom_border_black);
                     return false;
@@ -152,11 +159,87 @@ public class DraggableTodo {
     }
 
     /**
+     * Draws the top border onto the child below the moving view when such a
+     * child exists
+     */
+    private static void redrawViewBelowMovingView(View movingView) {
+        ViewGroup quadrant = (ViewGroup) movingView.getParent();
+        int movingViewIndx = quadrant.indexOfChild(movingView);
+        View nextView = quadrant.getChildAt(movingViewIndx + 1);
+        if (nextView != null) {
+            drawViewWithBackground(nextView, R.drawable.top_bottom_border_black);
+        }
+    }
+
+    /**
+     * Remove the border from the view above the entered View
+     */
+    private static void redrawViewAboveEnteredView(View enteredView) {
+        ViewGroup quadrant = (ViewGroup) enteredView.getParent();
+        int enteredViewIndx = quadrant.indexOfChild(enteredView);
+        View prevView = quadrant.getChildAt(enteredViewIndx - 1);
+        if (prevView != null) {
+            drawViewWithBackground(prevView, R.drawable.white_background);
+        }
+    }
+
+    /**
+     * Redraws a view with a specified new background and saves the old
+     * background
+     */
+    private static void drawViewWithBackground(View view, int drawableId) {
+        DraggableTodo todo = Quadrants.getDraggableTodo(view);
+        todo.drawNewBackground(drawableId);
+    }
+
+    private static void restoreBackground(View view) {
+        DraggableTodo todo = Quadrants.getDraggableTodo(view);
+        todo.restoreBackground();
+    }
+
+    private static void restoreBackgroundAbove(View enteredView) {
+        ViewGroup quadrant = (ViewGroup) enteredView.getParent();
+        int enteredViewIndx = quadrant.indexOfChild(enteredView);
+        View prevView = quadrant.getChildAt(enteredViewIndx - 1);
+        if (prevView != null) {
+            restoreBackground(prevView);
+        }
+    }
+
+    /**
+     * Draw a new background and save the old background for this DraggableTodo
+     */
+    private void drawNewBackground(int backgroundId) {
+        mOldBackground = mTodoView.getBackground();
+        mTodoView.setBackgroundResource(backgroundId);
+    }
+
+    /**
+     * Restores the old background for a View
+     */
+    @SuppressWarnings("deprecation")
+    public void restoreBackground() {
+        if (mOldBackground != null) {
+            mTodoView.setBackgroundDrawable(mOldBackground);
+            mOldBackground = null;
+        }
+    }
+
+    /**
+     * Reset background to be the original (bottom_border_black) if it has
+     * changed
+     */
+    public void restoreOriginalBackground() {
+        mTodoView.setBackgroundResource(R.drawable.bottom_border_black);
+        mTodoView.invalidate();
+        mOldBackground = null;
+    }
+
+    /**
      * Allows views to reorder as a view from the same group is moved up and
      * down that group
      */
     public void makeReorderable() {
-        // mTextView.setOnDragListener(new View.OnDragListener() {
         mTodoView.setOnDragListener(new View.OnDragListener() {
 
             @Override
@@ -165,14 +248,17 @@ public class DraggableTodo {
                 case DragEvent.ACTION_DRAG_ENTERED: {
                     ViewGroup quadrant = (ViewGroup) stationaryView.getParent();
                     quadrant.setBackgroundResource(R.drawable.quadrant);
-                    stationaryView.setBackgroundResource(R.drawable.top_border_mint);
+                    // stationaryView.setBackgroundResource(R.drawable.top_border_mint);
+                    redrawViewAboveEnteredView(stationaryView);
+                    drawViewWithBackground(stationaryView, R.drawable.top_border_mint);
                     break;
                 }
 
                 case DragEvent.ACTION_DRAG_EXITED: {
                     ViewGroup quadrant = (ViewGroup) stationaryView.getParent();
                     quadrant.setBackgroundResource(R.drawable.quadrant_to_drop);
-                    stationaryView.setBackgroundResource(R.drawable.bottom_border_black);
+                    restoreBackgroundAbove(stationaryView);
+                    restoreBackground(stationaryView);
                     break;
                 }
 
@@ -183,6 +269,7 @@ public class DraggableTodo {
                     ViewGroup quadrant = (ViewGroup) stationaryView.getParent();
                     quadrant.setBackgroundResource(R.drawable.quadrant);
                     movingTodo.redrawInNewLocation(quadrant, (ViewGroup) stationaryView);
+                    Quadrants.restoreAllOriginalBackgrounds();
                     return true;
                 }
 
