@@ -1,7 +1,6 @@
 package com.example.fourquadrantcontentprovider;
 
 import android.content.ContentResolver;
-import android.content.UriMatcher;
 import android.net.Uri;
 
 // Contract Class for accessing ContentResolver 

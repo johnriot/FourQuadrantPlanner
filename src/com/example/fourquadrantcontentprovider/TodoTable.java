@@ -1,8 +1,5 @@
 package com.example.fourquadrantcontentprovider;
 
-import com.example.fourquadrantplanner.R;
-
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 

@@ -3,12 +3,9 @@ package com.example.fourquadrantcontentprovider;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.util.Log;
-import android.util.SparseArray;
 
 // Note: Currently, this data does not persist across device reboot
 public class FourQuadrantContentProvider extends ContentProvider {
