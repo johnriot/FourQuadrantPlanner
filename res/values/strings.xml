@@ -22,5 +22,16 @@
 	<string name="less">less</string>
 	<string name="vertical_more">m\no\nr\ne</string>
 	<string name="vertical_less">l\ne\ns\ns</string>
+	<string name="action_about">About</string>
+	<string name="about_explanation">
+	4Q Planner provides a way for you to organise your life based on the
+	recommendations in Stephen R. Covey\'s influential book \"The 7 Habits of Highly
+	Effective People ©\". He recommends that we should always strive to
+	do our work when it is in Quadrant 2 (top right) - it is important work but we 
+	still have time to do it properly.
+	\n\n
+	4QPlanner© created by\n
+	John O\'Halloran 2014.
+	</string>
 	
 </resources>

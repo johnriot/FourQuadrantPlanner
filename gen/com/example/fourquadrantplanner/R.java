@@ -48,6 +48,7 @@ public final class R {
         public static final int white_background=0x7f020008;
     }
     public static final class id {
+        public static final int about_app=0x7f090019;
         public static final int action_delete=0x7f090017;
         public static final int action_todo=0x7f090018;
         public static final int bottom_border=0x7f090009;
@@ -84,6 +85,8 @@ public final class R {
         public static final int main=0x7f080000;
     }
     public static final class string {
+        public static final int about_explanation=0x7f060016;
+        public static final int action_about=0x7f060015;
         public static final int action_add_todo=0x7f060001;
         public static final int action_delete_todo=0x7f060002;
         public static final int app_name=0x7f060000;

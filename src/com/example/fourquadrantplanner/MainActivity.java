@@ -1,30 +1,10 @@
 package com.example.fourquadrantplanner;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnDragListener;
-import android.view.View.OnFocusChangeListener;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.fourquadrantcontentprovider.*;
 
 public class MainActivity extends Activity implements TodoDialogFragment.DialogListener {
     private Quadrants mQuadrants;
@@ -32,18 +12,8 @@ public class MainActivity extends Activity implements TodoDialogFragment.DialogL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_main);
         mQuadrants = new Quadrants(this);
-        // Moved readTextFromDatabase() here. When it was in onResume()
-        // then multiple copies of the same DraggableTodoView were being drawn
-        // in cases of pause-and-resume (e.g. press the home button and then
-        // resume the application). Correct behaviour achieved having the read
-        // method called here.
-
-        // ADDED REMOVE VIEWS CODE TO readFromDatabase() and moved this back to
-        // onResume()
-        // mQuadrants.readFromDatabase();
     }
 
     @Override
@@ -75,13 +45,17 @@ public class MainActivity extends Activity implements TodoDialogFragment.DialogL
         case R.id.action_delete:
             mQuadrants.promptConfirmDeletions();
             return true;
+        case R.id.about_app:
+            createAboutDialog();
         default:
             return false;
         }
     }
 
-    // Callback from TodoDialogFragment->Create which creates
-    // a new TodoItem in the selected quadrant
+    /**
+     * Callback from TodoDialogFragment->Create which creates a new TodoItem in
+     * the selected quadrant
+     */
     @Override
     public void onDialogPositiveClick(TodoBox box, String text, int viewKey) {
         if (viewKey == -1) {
@@ -96,6 +70,14 @@ public class MainActivity extends Activity implements TodoDialogFragment.DialogL
      */
     public void onConfirmDeletions() {
         mQuadrants.deleteTickedTodos();
+    }
+
+    /**
+     * Creates a dialog to explain the app
+     */
+    private void createAboutDialog() {
+        DialogFragment aboutDialog = new AboutDialogFragment();
+        aboutDialog.show(getFragmentManager(), "About");
     }
 
 }

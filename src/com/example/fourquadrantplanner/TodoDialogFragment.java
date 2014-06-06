@@ -40,7 +40,9 @@ public class TodoDialogFragment extends DialogFragment {
         return f;
     }
 
-    // A class creating this dialog must implement its method
+    /**
+     * A class creating this dialog must implement its method
+     */
     public interface DialogListener {
         public void onDialogPositiveClick(TodoBox box, String text, int ViewKey);
     }
@@ -48,8 +50,10 @@ public class TodoDialogFragment extends DialogFragment {
     // Use this instance of the interface to deliver action events
     DialogListener mListener;
 
-    // Override the Fragment.onAttach() method to instantiate the
-    // NoticeDialogListener
+    /**
+     * Override the Fragment.onAttach() method to instantiate the
+     * NoticeDialogListener
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -87,14 +91,12 @@ public class TodoDialogFragment extends DialogFragment {
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
-                        // Get the EditText and Layout
-                        EditText et = (EditText) v;
-                        et.setCursorVisible(true);
+                        eText.setCursorVisible(true);
                         Layout layout = ((EditText) v).getLayout();
                         // Find the cursor offset vertically and horizontally
                         // and put the cursor in the correct position.
-                        float x = event.getX() + et.getScrollX();
-                        float y = event.getY() + et.getScrollY();
+                        float x = event.getX() + eText.getScrollX();
+                        float y = event.getY() + eText.getScrollY();
                         int line = layout.getLineForVertical((int) y);
                         int offset = layout.getOffsetForHorizontal(line, x);
                         if (offset > 0)
@@ -109,6 +111,12 @@ public class TodoDialogFragment extends DialogFragment {
                     return false;
                 }
             });
+        }
+
+        // If this is a create new dialog action, put the cursor in the edit
+        // text
+        else {
+            eText.setCursorVisible(true);
         }
 
         // Select the appropriate radio button if we are editing a TodoItem
