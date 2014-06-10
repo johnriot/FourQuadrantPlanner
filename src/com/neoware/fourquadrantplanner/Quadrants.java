@@ -1,11 +1,13 @@
-package com.example.fourquadrantplanner;
+package com.neoware.fourquadrantplanner;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.example.fourquadrantcontentprovider.DataContract;
+import com.neoware.fourquadrantplanner.R;
+import com.neoware.fourquadrantcontentprovider.DataContract;
+
 import android.app.*;
 import android.content.*;
 import android.database.Cursor;

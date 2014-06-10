@@ -1,4 +1,4 @@
-package com.example.fourquadrantcontentprovider;
+package com.neoware.fourquadrantcontentprovider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

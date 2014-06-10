@@ -1,4 +1,4 @@
-package com.example.fourquadrantcontentprovider;
+package com.neoware.fourquadrantcontentprovider;
 
 public class DataRecord {
 

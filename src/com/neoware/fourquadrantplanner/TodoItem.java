@@ -1,4 +1,4 @@
-package com.example.fourquadrantplanner;
+package com.neoware.fourquadrantplanner;
 
 public class TodoItem {
 

@@ -1,6 +1,6 @@
-package com.example.fourquadrantcontentprovider;
+package com.neoware.fourquadrantcontentprovider;
 
-import com.example.fourquadrantplanner.R;
+import com.neoware.fourquadrantplanner.R;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;

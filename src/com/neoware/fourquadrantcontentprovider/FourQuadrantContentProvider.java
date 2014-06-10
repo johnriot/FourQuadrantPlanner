@@ -1,4 +1,4 @@
-package com.example.fourquadrantcontentprovider;
+package com.neoware.fourquadrantcontentprovider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.fourquadrantplanner"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    package="com.neoware.fourquadrantplanner"
+    android:versionCode="2"
+    android:versionName="1.1" >
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="18" />
-
+        android:targetSdkVersion="20" />
+ 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.neoware.fourquadrantplanner.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <provider
-            android:name="com.example.fourquadrantcontentprovider.FourQuadrantContentProvider"
+            android:name="com.neoware.fourquadrantcontentprovider.FourQuadrantContentProvider"
             android:authorities="com.example.fourquadrantcontentprovider"
             android:exported="false" >
         </provider>

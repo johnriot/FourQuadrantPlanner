@@ -1,4 +1,4 @@
-package com.example.fourquadrantcontentprovider;
+package com.neoware.fourquadrantcontentprovider;
 
 import android.content.ContentResolver;
 import android.net.Uri;

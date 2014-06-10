@@ -1,6 +1,7 @@
-package com.example.fourquadrantplanner;
+package com.neoware.fourquadrantplanner;
 
-import com.example.fourquadrantplanner.TodoDialogFragment.DialogListener;
+import com.neoware.fourquadrantplanner.R;
+import com.neoware.fourquadrantplanner.TodoDialogFragment.DialogListener;
 
 import android.app.Activity;
 import android.app.AlertDialog;

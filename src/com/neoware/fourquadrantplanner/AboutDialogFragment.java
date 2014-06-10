@@ -1,4 +1,6 @@
-package com.example.fourquadrantplanner;
+package com.neoware.fourquadrantplanner;
+
+import com.neoware.fourquadrantplanner.R;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
